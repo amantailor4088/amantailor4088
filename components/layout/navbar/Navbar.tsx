@@ -11,7 +11,7 @@ const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-neutral-200 dark:border-neutral-700 bg-white/70 dark:bg-neutral-900/80 backdrop-blur-md absolute">
+    <header className="sticky top-0 z-50 w-full border-b border-neutral-200 dark:border-neutral-700 bg-white/70 dark:bg-neutral-900/80 backdrop-blur-md">
       <nav className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between relative">
         
         {/* Mobile Menu Toggle */}
@@ -77,7 +77,7 @@ const Navbar = () => {
       </nav>
 
       {/* Mobile Navigation */}
-      <MobileNav isOpen={isMenuOpen} />
+      <MobileNav isOpen={isMenuOpen} setIsOpen={setIsMenuOpen} />
     </header>
   );
 };

@@ -88,8 +88,6 @@ const PopularCourses = () => {
                   alt={course.title}
                   fill
                   className="object-cover transition-transform duration-300 group-hover:scale-105"
-                  placeholder="blur"
-                  blurDataURL="/blur-placeholder.png"
                   sizes="(max-width: 768px) 100vw, 33vw"
                 />
               </div>
