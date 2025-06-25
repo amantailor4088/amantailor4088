@@ -1,5 +1,3 @@
-// components/Navbar/MobileNav.tsx
-
 import Link from "next/link";
 
 const navItems = [
@@ -8,7 +6,7 @@ const navItems = [
   { label: "Courses", href: "/courses" },
   { label: "Reviews", href: "/reviews" },
   { label: "Contact", href: "/contact" },
-]
+];
 
 interface Props {
   isOpen: boolean;
@@ -18,8 +16,8 @@ const MobileNav = ({ isOpen }: Props) => {
   if (!isOpen) return null;
 
   return (
-    <div className="lg:hidden px-4 pb-4">
-      <ul className="space-y-2 mt-2">
+    <div className="lg:hidden absolute top-full inset-x-0 z-40 bg-white dark:bg-neutral-900 shadow-lg border-t border-gray-200 dark:border-neutral-700 transition-all px-4 pb-4 pt-2">
+      <ul className="space-y-2">
         {navItems.map((item, idx) => (
           <li key={idx}>
             <Link

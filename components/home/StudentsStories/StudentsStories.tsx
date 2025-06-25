@@ -37,7 +37,7 @@ const SuccessStoriesSlider = () => {
 
                 <Swiper
                     modules={[Pagination, Autoplay]}
-                    autoplay={{ delay: 600000 }}
+                    autoplay={{ delay: 6000 }}
                     loop
                     pagination={{
                         clickable: true,
