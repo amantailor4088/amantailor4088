@@ -2,8 +2,12 @@
 
 import MapPreview from "@/components/contact/MapPreview";
 import Link from "next/link";
+import React from "react";
 
 const ContactPage = () => {
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault()
+  }
   return (
     <section className="relative min-h-screen bg-white dark:bg-neutral-950 text-gray-900 dark:text-white py-24 px-6 sm:px-12 lg:px-20 overflow-hidden transition-colors duration-500">
       {/* Abstract Background Accents */}
@@ -53,7 +57,7 @@ const ContactPage = () => {
             Send Us a Message
           </h2>
 
-          <form className="space-y-5">
+          <form className="space-y-5" onSubmit={handleSubmit}>
             <div>
               <label htmlFor="name" className="block mb-1 text-sm text-gray-700 dark:text-gray-400">
                 Name
