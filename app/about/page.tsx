@@ -1,5 +1,7 @@
 import React from "react";
 import { Scissors, GraduationCap, BookOpen, Users } from "lucide-react";
+import Image from "next/image";
+import { Eye } from "lucide-react";
 
 const App = () => {
   return (
@@ -38,48 +40,74 @@ const App = () => {
         </div>
       </section>
 
-      {/* Mission & Vision Section */}
-     <section className="py-16 px-6 bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 dark:from-[#1c1c2d] dark:via-[#2b1a2d] dark:to-[#1a1a30] transition-colors duration-700">
-  <div className="max-w-6xl mx-auto">
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center mb-20 md:mb-24">
-      <div className="md:order-2">
-        <img
-          src="https://placehold.co/600x400/6b46c1/ffffff?text=Our+Mission"
-          alt="Our Mission - Democratizing Education"
-          className="rounded-xl shadow-2xl w-full h-auto object-cover transform transition-transform duration-500 hover:scale-102 hover:shadow-xl"
-        />
-      </div>
-      <div className="md:order-1 text-center md:text-left">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 relative pb-3">
-          Our Mission
-          <span className="absolute bottom-0 left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 w-24 h-1 bg-purple-600 dark:bg-purple-400 rounded-full"></span>
-        </h2>
-        <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-prose mx-auto md:mx-0">
-          Our mission is to **democratize high-quality stitching and tailoring education**. We strive to provide **comprehensive, easy-to-understand courses** that empower individuals to learn at their own pace, from the comfort of their homes. We aim to equip our students with **practical skills and creative confidence**.
-        </p>
-      </div>
-    </div>
+          {/* visio and mission */}
+      <section className="py-16 px-6 bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 dark:from-[#1c1c2d] dark:via-[#2b1a2d] dark:to-[#1a1a30] transition-colors duration-700">
+        <div className="max-w-6xl mx-auto grid gap-12 md:grid-cols-2">
+          {/* Mission Block */}
+          <div className="relative overflow-hidden rounded-xl p-8 group bg-gradient-to-br from-white/60 via-white/30 to-white/10 dark:from-[#2b1a2d]/60 dark:via-[#1c1c2d]/30 dark:to-[#1c1c2d]/10 backdrop-blur-lg shadow-xl border border-white/30 dark:border-white/20 transition-all duration-500 hover:scale-[1.02]">
+            {/* Gradient glow ring */}
+            <div className="absolute -top-10 -left-10 w-40 h-40 rounded-full bg-gradient-to-tr from-orange-400 to-red-500 blur-3xl opacity-30 group-hover:opacity-50 transition-all duration-500"></div>
 
-    <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
-      <div className="text-center md:text-left">
-        <h2 className="text-3xl sm:text-4xl lg:text-5xl font-extrabold text-gray-900 dark:text-white mb-6 relative pb-3">
-          Our Vision
-          <span className="absolute bottom-0 left-1/2 md:left-0 -translate-x-1/2 md:translate-x-0 w-24 h-1 bg-purple-600 dark:bg-purple-400 rounded-full"></span>
-        </h2>
-        <p className="text-lg md:text-xl text-gray-700 dark:text-gray-300 leading-relaxed max-w-prose mx-auto md:mx-0">
-          We envision a future where every aspiring tailor has access to **world-className training**, fostering a vibrant community of **skilled artisans and entrepreneurs**. We aspire to be India's leading online academy for textile arts, recognized for our **innovative teaching methods** and the **success of our graduates**.
-        </p>
-      </div>
-      <div>
-        <img
-          src="https://placehold.co/600x400/indigo-600/ffffff?text=Our+Vision"
-          alt="Our Vision - Future of Tailoring"
-          className="rounded-xl shadow-2xl w-full h-auto object-cover transform transition-transform duration-500 hover:scale-102 hover:shadow-xl"
-        />
-      </div>
-    </div>
-  </div>
-</section>
+            <div className="relative flex flex-col items-center text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-orange-400 to-red-500 flex items-center justify-center mb-6 shadow-lg">
+                <GraduationCap
+                  className="w-12 h-12 text-white"
+                  strokeWidth={2.5}
+                />
+              </div>
+              <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">
+                Our Mission
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed mb-4">
+                Our mission is to democratize high-quality stitching and
+                tailoring education. We strive to provide{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-red-400 font-semibold">
+                  comprehensive, easy-to-understand
+                </span>{" "}
+                courses that empower individuals to learn at their own pace,
+                from the comfort of their homes. We aim to equip our students
+                with{" "}
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-orange-400 to-red-500 font-semibold">
+                  practical skills and creative confidence
+                </span>
+                .
+              </p>
+              <div className="h-1 w-24 mx-auto rounded-full bg-gradient-to-r from-orange-400 to-red-500"></div>
+            </div>
+          </div>
+
+          {/* Vision Block */}
+          <div className="relative overflow-hidden rounded-xl p-8 group bg-gradient-to-br from-white/60 via-white/30 to-white/10 dark:from-[#2b1a2d]/60 dark:via-[#1c1c2d]/30 dark:to-[#1c1c2d]/10 backdrop-blur-lg shadow-xl border border-white/30 dark:border-white/20 transition-all duration-500 hover:scale-[1.02]">
+            {/* Gradient glow ring */}
+            <div className="absolute -bottom-10 -right-10 w-40 h-40 rounded-full bg-gradient-to-tr from-blue-500 to-indigo-600 blur-3xl opacity-30 group-hover:opacity-50 transition-all duration-500"></div>
+
+            <div className="relative flex flex-col items-center text-center">
+              <div className="w-24 h-24 rounded-full bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center mb-6 shadow-lg">
+                <Eye className="w-12 h-12 text-white" strokeWidth={2.5} />
+              </div>
+              <h3 className="text-3xl font-extrabold text-gray-900 dark:text-white mb-4 tracking-tight">
+                Our Vision
+              </h3>
+              <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed mb-4">
+                We envision a future where every aspiring tailor has access to
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-indigo-600 font-semibold">
+                  {" "}
+                  world-class training
+                </span>
+                , fostering a vibrant community of skilled artisans and
+                entrepreneurs. We aspire to be India’s
+                <span className="text-transparent bg-clip-text bg-gradient-to-r from-purple-500 to-indigo-600 font-semibold">
+                  {" "}
+                  leading online academy for textile arts
+                </span>
+                , recognized for our innovative teaching methods and the success
+                of our graduates.
+              </p>
+              <div className="h-1 w-24 mx-auto rounded-full bg-gradient-to-r from-blue-500 to-indigo-600"></div>
+            </div>
+          </div>
+        </div>
+      </section>
 
       {/* Founder Section */}
       <section className="py-20 px-6 bg-gradient-to-tr from-purple-100 via-rose-50 to-indigo-100 dark:from-[#1c1c2d] dark:via-[#2b1a2d] dark:to-[#1a1a30] transition-colors duration-700">
@@ -93,8 +121,10 @@ const App = () => {
             <div className="relative w-52 h-52 sm:w-64 sm:h-64 flex-shrink-0">
               <div className="absolute inset-0 rounded-full bg-gradient-to-br from-purple-500 via-pink-400 to-indigo-500 blur-xl opacity-40 animate-fade-in-slow"></div>
               <div className="relative w-full h-full rounded-full overflow-hidden border-4 border-purple-700 dark:border-purple-400 shadow-xl ring-4 ring-purple-300/50 dark:ring-purple-700/50">
-                <img
-                  src="https://placehold.co/256x256/6b46c1/ffffff?text=Aman+Tailor"
+                <Image
+                  width={400}
+                  height={400}
+                  src="/ownerimages/img1.jpg"
                   alt="Aman Tailor - Founder"
                   className="w-full h-full object-cover transition-transform duration-300 hover:scale-105"
                 />
