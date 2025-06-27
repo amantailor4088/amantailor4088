@@ -1,8 +1,5 @@
-// app/api/auth/reset-password/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import bcrypt from "bcryptjs";
-import validator from "validator";
 import User from "@/models/user.model";
 import { connectDB } from "@/lib/db";
 import { verifyTokenFromCookies } from "@/lib/jwt";
@@ -13,14 +10,8 @@ export async function POST(req: NextRequest) {
 
     const { password } = await req.json();
 
-    const errors: { field: string; message: string }[] = [];
-
     if (!password) {
-      errors.push({ field: "password", message: "Password must be valid." });
-    }
-
-    if (errors.length > 0) {
-      return NextResponse.json({ success: false, errors }, { status: 422 });
+       return NextResponse.json({ success: false, error: { field: "password", message: "Password must be valid." } }, { status: 422 });
     }
 
     const payload = await verifyTokenFromCookies();
@@ -31,6 +22,23 @@ export async function POST(req: NextRequest) {
     const user = await User.findById(payload.userId);
     if (!user) {
       return NextResponse.json({ success: false, message: "User not found." }, { status: 404 });
+    }
+
+    if (!user.sessionToken || user.sessionToken !== payload.sessionToken) {
+      const response = NextResponse.json(
+        { success: false, message: "Session mismatch. Please log in again." },
+        { status: 403 }
+      );
+
+      response.cookies.set("jwtToken", "", {
+        httpOnly: true,
+        secure: true,
+        sameSite: "lax",
+        path: "/",
+        maxAge: 0,
+      });
+
+      return response;
     }
 
     const hashedPassword = await bcrypt.hash(password, 12);

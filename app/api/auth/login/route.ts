@@ -90,10 +90,15 @@ export async function POST(req: NextRequest) {
 
         }
 
+        const sessionToken = crypto.randomBytes(32).toString("hex");
+        user.sessionToken = sessionToken;
+        await user.save();
+
         const token = generateToken({
             userId: user._id.toString(),
             email: user.email,
             role: user.role,
+            sessionToken
         });
 
         (await cookies()).set('jwtToken', token, {

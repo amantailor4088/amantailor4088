@@ -1,6 +1,7 @@
 // hooks/useResetPassword.ts
 "use client";
 
+import { useAuth } from "@/context/auth/AuthContext";
 import { useState } from "react";
 
 interface ResetPayload {
@@ -10,6 +11,7 @@ interface ResetPayload {
 export function useResetPassword() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const {logout} = useAuth()
 
   const resetPassword = async ({ password }: ResetPayload): Promise<boolean> => {
     setLoading(true);
@@ -32,6 +34,9 @@ export function useResetPassword() {
           setError(data.errors.map((e: any) => e.message).join(" "));
         } else {
           setError(data.message || "Something went wrong.");
+        }
+        if (res.status === 401 || res.status === 403) {
+          logout();
         }
         return false;
       }

@@ -1,8 +1,13 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
+interface CourseProgress {
+  [lessonId: string]: number; // e.g. "lesson-1": 75
+}
+
 interface PurchasedCourse {
   course: Types.ObjectId;
   courseExpiresAt: Date;
+  progress: CourseProgress;
 }
 
 export interface UserDocument extends Document {
@@ -13,8 +18,14 @@ export interface UserDocument extends Document {
   isVerified: boolean;
   otp: string | null;
   otpExpiresAt: Date | null;
+  sessionToken: string | null; // New: for enforcing single session
   coursesPurchased: PurchasedCourse[];
 }
+
+const CourseProgressSchema = new Schema<CourseProgress>(
+  {},
+  { _id: false, strict: false }
+);
 
 const PurchasedCourseSchema = new Schema<PurchasedCourse>(
   {
@@ -26,6 +37,10 @@ const PurchasedCourseSchema = new Schema<PurchasedCourse>(
     courseExpiresAt: {
       type: Date,
       required: true,
+    },
+    progress: {
+      type: CourseProgressSchema,
+      default: {},
     },
   },
   { _id: false }
@@ -71,6 +86,11 @@ const UserSchema = new Schema<UserDocument>({
 
   otpExpiresAt: {
     type: Date,
+    default: null,
+  },
+
+  sessionToken: {
+    type: String,
     default: null,
   },
 

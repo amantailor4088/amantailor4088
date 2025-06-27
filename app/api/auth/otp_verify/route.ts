@@ -6,6 +6,7 @@ import { connectDB } from "@/lib/db";
 import { rateLimit } from "@/lib/ratelimit";
 import { generateToken } from "@/lib/jwt";
 import { cookies } from "next/headers";
+import crypto from "crypto";
 
 export async function POST(req: NextRequest) {
     try {
@@ -87,12 +88,16 @@ export async function POST(req: NextRequest) {
         user.isVerified = true;
         user.otp = undefined;
         user.otpExpiresAt = undefined;
+
+        const sessionToken = crypto.randomBytes(32).toString("hex");
+        user.sessionToken = sessionToken;
         await user.save();
 
         const token = generateToken({
             userId: user._id.toString(),
             email: user.email,
             role: user.role,
+            sessionToken
         });
 
         (await cookies()).set('jwtToken', token, {

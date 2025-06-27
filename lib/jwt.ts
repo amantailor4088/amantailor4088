@@ -6,6 +6,7 @@ export interface CustomJwtPayload extends DefaultJwtPayload {
   userId: string;
   email: string;
   role: "admin" | "coadmin" | "user";
+  sessionToken: string
 }
 
 const JWT_SECRET = process.env.JWT_SECRET as string;
@@ -14,9 +15,6 @@ if (!JWT_SECRET) {
   throw new Error("JWT_SECRET is not defined in environment variables");
 }
 
-/**
- * Generate JWT Token
- */
 export function generateToken(payload: CustomJwtPayload) {
   const options: SignOptions = {
     expiresIn: "7d",

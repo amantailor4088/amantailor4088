@@ -10,6 +10,7 @@ import AuthModal from "@/components/login/Auth";
 import { useAuth } from "@/context/auth/AuthContext";
 import { motion, AnimatePresence } from "framer-motion";
 import ResetPasswordModal from "@/components/login/resetPassword/ResetPassword";
+import { useRouter } from "next/navigation";
 
 const Navbar = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
@@ -17,6 +18,7 @@ const Navbar = () => {
   const [dropdownOpen, setDropdownOpen] = useState(false);
   const { user, logout, resetPassword } = useAuth();
   const dropdownRef = useRef<HTMLDivElement>(null);
+  const router = useRouter()
 
   const firstLetter = user?.name?.[0]?.toUpperCase() || "U";
 
@@ -119,7 +121,17 @@ const Navbar = () => {
                     <div className="px-4 py-3 text-sm font-medium text-gray-700 dark:text-gray-200">
                       {user.name}
                     </div>
-                    {/* Future: add <Link href="/dashboard">Dashboard</Link> etc. */}
+
+                    <button
+                      onClick={() => {
+                        router.push(user.role !== "user" ? "/admin" : "/dashboard");
+                        setDropdownOpen(false);
+                      }}
+                      className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-700 transition"
+                    >
+                      Dashboard
+                    </button>
+
                     <button
                       onClick={() => {
                         logout();
