@@ -1,13 +1,8 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-interface CourseProgress {
-  [lessonId: string]: number; // e.g. "lesson-1": 75
-}
-
 interface PurchasedCourse {
   course: Types.ObjectId;
   courseExpiresAt: Date;
-  progress: CourseProgress;
 }
 
 export interface UserDocument extends Document {
@@ -18,14 +13,11 @@ export interface UserDocument extends Document {
   isVerified: boolean;
   otp: string | null;
   otpExpiresAt: Date | null;
-  sessionToken: string | null; // New: for enforcing single session
+  sessionToken: string | null;
   coursesPurchased: PurchasedCourse[];
+  createdAt: Date;
+  updatedAt: Date;
 }
-
-const CourseProgressSchema = new Schema<CourseProgress>(
-  {},
-  { _id: false, strict: false }
-);
 
 const PurchasedCourseSchema = new Schema<PurchasedCourse>(
   {
@@ -38,67 +30,68 @@ const PurchasedCourseSchema = new Schema<PurchasedCourse>(
       type: Date,
       required: true,
     },
-    progress: {
-      type: CourseProgressSchema,
-      default: {},
-    },
   },
   { _id: false }
 );
 
-const UserSchema = new Schema<UserDocument>({
-  name: {
-    type: String,
-    required: true,
-    trim: true,
-    minlength: 2,
-  },
+const UserSchema = new Schema<UserDocument>(
+  {
+    name: {
+      type: String,
+      required: true,
+      trim: true,
+      minlength: 2,
+    },
 
-  email: {
-    type: String,
-    required: true,
-    unique: true,
-    lowercase: true,
-    trim: true,
-  },
+    email: {
+      type: String,
+      required: true,
+      unique: true,
+      lowercase: true,
+      trim: true,
+    },
 
-  password: {
-    type: String,
-    required: true,
-    minlength: 6,
-  },
+    password: {
+      type: String,
+      required: true,
+      minlength: 6,
+    },
 
-  role: {
-    type: String,
-    enum: ["admin", "coadmin", "user"],
-    default: "user",
-  },
+    role: {
+      type: String,
+      enum: ["admin", "coadmin", "user"],
+      default: "user",
+    },
 
-  isVerified: {
-    type: Boolean,
-    default: false,
-  },
+    isVerified: {
+      type: Boolean,
+      default: false,
+    },
 
-  otp: {
-    type: String,
-    default: null,
-  },
+    otp: {
+      type: String,
+      default: null,
+    },
 
-  otpExpiresAt: {
-    type: Date,
-    default: null,
-  },
+    otpExpiresAt: {
+      type: Date,
+      default: null,
+    },
 
-  sessionToken: {
-    type: String,
-    default: null,
-  },
+    sessionToken: {
+      type: String,
+      default: null,
+    },
 
-  coursesPurchased: {
-    type: [PurchasedCourseSchema],
-    default: [],
+    coursesPurchased: {
+      type: [PurchasedCourseSchema],
+      default: [],
+    },
   },
-});
+  {
+    timestamps: true, // adds createdAt & updatedAt
+  }
+);
 
 export default mongoose.models.User ||
   mongoose.model<UserDocument>("User", UserSchema);

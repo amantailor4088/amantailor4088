@@ -10,8 +10,8 @@ export async function POST(req: NextRequest) {
 
     const { password } = await req.json();
 
-    if (!password) {
-       return NextResponse.json({ success: false, error: { field: "password", message: "Password must be valid." } }, { status: 422 });
+    if (!password && password.length < 6) {
+       return NextResponse.json({ success: false, error: { field: "password", message: "Password must be valid 6 digit Password." } }, { status: 422 });
     }
 
     const payload = await verifyTokenFromCookies();

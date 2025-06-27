@@ -36,7 +36,20 @@ const MobileNav = ({ isOpen, setIsOpen, setShowLogin }: Props) => {
             </Link>
           </li>
         ))}
-
+        {
+          user && (
+            <div>
+              <Link
+                href={user.role == "user" ? "/dashboard" : "/admin"}
+                className="block w-full text-base py-2 px-3 rounded-md text-gray-800 hover:bg-purple-100 dark:text-gray-100 dark:hover:bg-purple-800 dark:hover:text-purple-300 transition"
+                onClick={() => setIsOpen(false)}
+              >
+                Dashboard
+                {/* {item.label} */}
+              </Link>
+            </div>
+          )
+        }
         <li>
           {!user ? (
             <div

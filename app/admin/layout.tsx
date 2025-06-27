@@ -1,0 +1,18 @@
+import AdminMobileSwitcher from "@/components/admin/layout/AdminMobileSwitcher";
+import AdminSidebar from "@/components/admin/layout/AdminSidebar";
+import { ReactNode } from "react";
+
+export default function AdminLayout({ children }: { children: ReactNode }) {
+  return (
+    <div className="flex min-h-screen bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-white">
+      <div className="hidden lg:block">
+        <AdminSidebar />
+      </div>
+
+      <main className="flex-1 overflow-y-auto">
+        {children}
+        <AdminMobileSwitcher />
+      </main>
+    </div>
+  );
+}
