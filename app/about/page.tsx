@@ -40,7 +40,7 @@ const App = () => {
         </div>
       </section>
 
-          {/* visio and mission */}
+      {/* visio and mission */}
       <section className="py-16 px-6 bg-gradient-to-br from-purple-100 via-pink-50 to-indigo-100 dark:from-[#1c1c2d] dark:via-[#2b1a2d] dark:to-[#1a1a30] transition-colors duration-700">
         <div className="max-w-6xl mx-auto grid gap-12 md:grid-cols-2">
           {/* Mission Block */}
@@ -236,7 +236,7 @@ const App = () => {
         />
 
         {/* Dark Overlay */}
-        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/40 dark:from-purple-950 dark:via-purple-900 dark:to-purple-800 backdrop-blur-sm" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/40   backdrop-blur-sm" />
 
         {/* Content */}
         <div className="relative z-10 max-w-4xl mx-auto">
