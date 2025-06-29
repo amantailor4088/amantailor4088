@@ -1,7 +1,12 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Course from "@/models/course.model";
-import { createBunnyVideo, uploadBunnyVideo } from "@/lib/bunny";
+import { nanoid } from "nanoid";
+import {
+  createBunnyVideo,
+  uploadBunnyVideo,
+  uploadThumbnailToBunny,
+} from "@/lib/bunny";
 
 function slugify(text: string) {
   return text
@@ -17,32 +22,42 @@ export async function POST(req: NextRequest) {
     await connectDB();
 
     const formData = await req.formData();
-
     const title = formData.get("title") as string;
     const description = formData.get("description") as string;
     const price = Number(formData.get("price"));
-    const category =
-      (formData.get("category") as string)?.trim() || "Uncategorized";
+    const category =(formData.get("category") as string)?.trim() || "Uncategorized";
+    
+    const slugbase = slugify(title);
+    const slug = `${slugbase}-${nanoid(6)}`;
+    
 
-    if (!title) {
+    // ✅ Handle thumbnail upload
+    const thumbnailFile = formData.get("thumbnail") as File | null;
+
+    let thumbnailUrl: string | null = null;
+
+    if (thumbnailFile) {
+      const arrayBuffer = await thumbnailFile.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+
+      // Create a filename, e.g. using the slug:
+      const fileName = `thumbnails/${slug}-${Date.now()}-${thumbnailFile.name}`;
+
+      // Upload to Bunny Storage
+      thumbnailUrl = await uploadThumbnailToBunny(fileName, buffer);
+      console.log("Thumbnail uploaded to Bunny Storage:", thumbnailUrl);
+      
+    } else {
       return NextResponse.json(
-        { success: false, message: "Title is required!" },
+        { success: false, message: "Thumbnail image is required." },
         { status: 400 }
       );
     }
 
-    if (!price || isNaN(price)) {
-      return NextResponse.json(
-        { success: false, message: "Valid price is required!" },
-        { status: 400 }
-      );
-    }
-
-    const slug = slugify(title);
-
+    // ✅ Upload videos as before
     const videosJson = formData.get("videos") as string;
     const videosArray = videosJson ? JSON.parse(videosJson) : [];
-    console.log("Videos array:", videosArray);
+
     const videosData = [];
 
     for (let i = 0; i < videosArray.length; i++) {
@@ -55,9 +70,8 @@ export async function POST(req: NextRequest) {
 
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-      console.log(`Uploading video: ${videoTitle}`); 
+
       const bunnyVideoData = await createBunnyVideo(videoTitle);
-      console.log("Bunny video created:", bunnyVideoData);
       await uploadBunnyVideo(bunnyVideoData.guid, buffer);
 
       const embedUrl = `https://video.bunnycdn.com/embed/${bunnyVideoData.guid}`;
@@ -69,12 +83,14 @@ export async function POST(req: NextRequest) {
       });
     }
 
+    // ✅ Create course with thumbnailUrl
     const courseDoc = await Course.create({
       title,
       description,
       price,
       category,
       slug,
+      thumbnail:thumbnailUrl, 
       videos: videosData,
     });
 

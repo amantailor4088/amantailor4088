@@ -4,6 +4,7 @@ import "./globals.css";
 import Navbar from "@/components/layout/navbar/Navbar";
 import Footer from "@/components/layout/Footer/Footer";
 import { AuthProvider } from "@/context/auth/AuthContext";
+import { CourseProvider } from "@/context/course/CourseContext";
 
 export const metadata: Metadata = {
   title: "Aman Tailor",
@@ -17,13 +18,13 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="en">
-      <body
-        className={`antialiased`}
-      >
+      <body className={`antialiased`}>
         <AuthProvider>
-          <Navbar />
-          {children}
-          <Footer />
+          <CourseProvider>
+            <Navbar />
+            {children}
+            <Footer />
+          </CourseProvider>
         </AuthProvider>
       </body>
     </html>

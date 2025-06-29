@@ -1,6 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useUploadCourse } from "@/hooks/courses/useUploadCourse";
+import { validateCourseForm } from "@/lib/validateFormData";
+import { useCourseContext } from "@/context/course/CourseContext";
 
 export default function AddCourses() {
   const [title, setTitle] = useState("");
@@ -8,9 +11,9 @@ export default function AddCourses() {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [videos, setVideos] = useState<{ title: string; file: File | null }[]>(
-    []
-  );
+  const [videos, setVideos] = useState<{ title: string; file: File | null }[]>([]);
+  const [validationErrors, setValidationErrors] = useState<string[]>([]);
+  const { addCourse } = useCourseContext();
 
   const handleAddVideo = () => {
     setVideos([...videos, { title: "", file: null }]);
@@ -30,11 +33,25 @@ export default function AddCourses() {
     setVideos(updated);
   };
 
+  const { uploadCourse, loading, error } = useUploadCourse();
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const formData = new FormData();
+    const errors = validateCourseForm({
+      title,
+      description,
+      price,
+      category,
+      thumbnail,
+      videos,
+    });
+    if (errors.length > 0) {
+      setValidationErrors(errors);
+      return;
+    }
 
+    const formData = new FormData();
     formData.append("title", title);
     formData.append("description", description);
     formData.append("price", price);
@@ -43,34 +60,30 @@ export default function AddCourses() {
     if (thumbnail) {
       formData.append("thumbnail", thumbnail);
     }
-
-    formData.append("videos",JSON.stringify(videos.map((v) => ({ title: v.title,}))));
-
+    formData.append(
+      "videos",
+      JSON.stringify(videos.map((v) => ({ title: v.title })))
+    );
     videos.forEach((video, i) => {
       if (video.file) {
         formData.append(`videos[${i}][file]`, video.file);
       }
     });
 
-    console.log("Submitting course data:", {
-      title,
-      description,
-      price,
-      category,
-      thumbnail: thumbnail ? thumbnail.name : null,
-      videos: videos.map((v) => ({
-        title: v.title,
-        file: v.file ? v.file.name : null,
-      })),
-    });
-
-    const res = await fetch("/api/uploadCourse", {
-      method: "POST",
-      body: formData,
-    });
-
-    const data = await res.json();
-    console.log(data);
+    try {
+      const data = await uploadCourse(formData);
+      addCourse(data.course);
+      console.log("Upload success:", data);
+      setTitle("");
+      setDescription("");
+      setPrice("");
+      setCategory("");
+      setThumbnail(null);
+      setVideos([]);
+      alert("Course uploaded successfully!");
+    } catch (error) {
+      console.error("Upload failed:", error);
+    }
   };
 
   return (
@@ -83,7 +96,16 @@ export default function AddCourses() {
           <p className="text-gray-600 dark:text-gray-400 mb-8">
             Enter details below to create your stitching course.
           </p>
-
+          {validationErrors.length > 0 && (
+            <div className="bg-red-100 text-red-700 p-4 rounded-md mb-6">
+              <h3 className="font-semibold">Validation Errors:</h3>
+              <ul className="list-disc pl-5">
+                {validationErrors.map((error, index) => (
+                  <li key={index}>{error}</li>
+                ))}
+              </ul>
+            </div>
+          )}
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Title */}
             <div>
@@ -96,7 +118,6 @@ export default function AddCourses() {
                 onChange={(e) => setTitle(e.target.value)}
                 className="w-full border border-gray-300 dark:border-gray-600 dark:bg-gray-700 dark:text-gray-100 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-indigo-500"
                 placeholder="e.g. Stitching Basics"
-                required
               />
             </div>
 
@@ -241,8 +262,9 @@ export default function AddCourses() {
               type="submit"
               className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-3 rounded-md transition"
             >
-              Submit Course
+              {loading ? "Uploading..." : "Upload Course"}
             </button>
+            {error && <p className="text-red-600 text-sm mt-2">{error}</p>}
           </form>
         </section>
       </div>
