@@ -8,7 +8,9 @@ export default function AddCourses() {
   const [price, setPrice] = useState("");
   const [category, setCategory] = useState("");
   const [thumbnail, setThumbnail] = useState<File | null>(null);
-  const [videos, setVideos] = useState<{ title: string; file: File | null }[]>([]);
+  const [videos, setVideos] = useState<{ title: string; file: File | null }[]>(
+    []
+  );
 
   const handleAddVideo = () => {
     setVideos([...videos, { title: "", file: null }]);
@@ -18,53 +20,58 @@ export default function AddCourses() {
     setVideos(videos.filter((_, i) => i !== index));
   };
 
-  const handleVideoChange = (index: number,field: "title" | "file", value: any) => {
+  const handleVideoChange = (
+    index: number,
+    field: "title" | "file",
+    value: any
+  ) => {
     const updated = [...videos];
     updated[index][field] = value;
     setVideos(updated);
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
-  e.preventDefault();
+    e.preventDefault();
 
-  const formData = new FormData();
+    const formData = new FormData();
 
-  formData.append("title", title);
-  formData.append("description", description);
-  formData.append("price", price);
-  formData.append("category", category);
+    formData.append("title", title);
+    formData.append("description", description);
+    formData.append("price", price);
+    formData.append("category", category);
 
-  if (thumbnail) {
-    formData.append("thumbnail", thumbnail);
-  }
-
-  videos.forEach((video, i) => {
-    if (video.file) {
-      formData.append(`videos[${i}][file]`, video.file);
+    if (thumbnail) {
+      formData.append("thumbnail", thumbnail);
     }
-    formData.append(`videos[${i}][title]`, video.title);
-  });
 
-   console.log("Submitting course data:", {
-    title,
-    description,
-    price,
-    category,
-    thumbnail: thumbnail ? thumbnail.name : null,
-    videos: videos.map((v) => ({
-      title: v.title,
-      file: v.file ? v.file.name : null,
-    })),
-   })
-  const res = await fetch("/api/uploadCourse", {
-    method: "POST",
-    body: formData,
-  });
+    formData.append("videos",JSON.stringify(videos.map((v) => ({ title: v.title,}))));
 
-  const data = await res.json();
-  console.log(data);
-};
+    videos.forEach((video, i) => {
+      if (video.file) {
+        formData.append(`videos[${i}][file]`, video.file);
+      }
+    });
 
+    console.log("Submitting course data:", {
+      title,
+      description,
+      price,
+      category,
+      thumbnail: thumbnail ? thumbnail.name : null,
+      videos: videos.map((v) => ({
+        title: v.title,
+        file: v.file ? v.file.name : null,
+      })),
+    });
+
+    const res = await fetch("/api/uploadCourse", {
+      method: "POST",
+      body: formData,
+    });
+
+    const data = await res.json();
+    console.log(data);
+  };
 
   return (
     <main className="min-h-screen bg-gray-50 dark:bg-gray-900 px-6 py-10">
@@ -217,8 +224,6 @@ export default function AddCourses() {
                         </p>
                       )}
                     </div>
-
-                    
                   </div>
                   <button
                     type="button"

@@ -42,7 +42,7 @@ export async function POST(req: NextRequest) {
 
     const videosJson = formData.get("videos") as string;
     const videosArray = videosJson ? JSON.parse(videosJson) : [];
-
+    console.log("Videos array:", videosArray);
     const videosData = [];
 
     for (let i = 0; i < videosArray.length; i++) {
@@ -55,8 +55,9 @@ export async function POST(req: NextRequest) {
 
       const arrayBuffer = await file.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
-
+      console.log(`Uploading video: ${videoTitle}`); 
       const bunnyVideoData = await createBunnyVideo(videoTitle);
+      console.log("Bunny video created:", bunnyVideoData);
       await uploadBunnyVideo(bunnyVideoData.guid, buffer);
 
       const embedUrl = `https://video.bunnycdn.com/embed/${bunnyVideoData.guid}`;
