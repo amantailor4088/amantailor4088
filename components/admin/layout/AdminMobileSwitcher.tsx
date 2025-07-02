@@ -26,14 +26,14 @@ export default function AdminMobileSwitcher() {
         <motion.div
           layout
           layoutId="active-tab"
-          className="absolute top-1 left-0 h-[calc(100%-0.5rem)] w-1/4 rounded-full bg-purple-600 z-0"
+          className="absolute top-1 left-0 h-[calc(100%-0.5rem)] w-1/2 rounded-full bg-purple-600 z-0"
           style={{
             transform: `translateX(${tabs.findIndex(tab => tab.href === pathname) * 100}%)`,
             transition: "transform 0.3s ease",
           }}
         />
 
-        {tabs.map((tab, index) => {
+        {tabs.map((tab) => {
           const isActive = pathname === tab.href;
           const Icon = tab.icon;
 
