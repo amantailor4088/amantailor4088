@@ -118,7 +118,7 @@ export async function deleteBunnyThumbnail( filePath: string, fileName: string) 
   const res = await fetch(url, {
     method: "DELETE",
     headers: {
-      AccessKey: BUNNY_STORAGE_API_KEY,
+      AccessKey:BUNNY_STORAGE_API_KEY,
     },
   });
 

@@ -8,7 +8,7 @@ export async function DELETE(
   req: NextRequest,
   context: { params: { courseId: string } }
 ) {
-  const courseId = await context.params.courseId;
+  const courseId = context.params.courseId;
 
   try {
     await connectDB();
@@ -37,7 +37,6 @@ export async function DELETE(
       );
     }
 
-
     // ✅ Delete Bunny videos
     for (const video of deletedCourse.videos) {
       if (video.bunnyVideoId) {
@@ -53,19 +52,18 @@ export async function DELETE(
       }
     }
 
-     // ✅ Delete thumbnail if exists
-    if (deletedCourse.thumbnail) {
-      const urlObj = new URL(deletedCourse.thumbnail);
-      const pathname = urlObj.pathname;
+    // ✅ Delete thumbnail if exists
+   if (deletedCourse.thumbnail) {
+  const urlObj = new URL(deletedCourse.thumbnail);
+  const relativePath = urlObj.pathname.slice(1);
 
-      const pathParts = pathname.split("/");
-      const filePath =
-        pathParts.length > 3 ? pathParts.slice(2, -1).join("/") : "";
-      const fileName = pathParts[pathParts.length - 1];
+  const lastSlash = relativePath.lastIndexOf("/");
+  const filePath = lastSlash !== -1 ? relativePath.substring(0, lastSlash) : "";
+  const fileName = lastSlash !== -1 ? relativePath.substring(lastSlash + 1) : relativePath;
+  await deleteBunnyThumbnail(filePath, fileName);
+  console.log("Deleted Bunny thumbnail.", deletedCourse.thumbnail);
+}
 
-      await deleteBunnyThumbnail(filePath, fileName);
-      console.log("Deleted Bunny thumbnail:", filePath, fileName);
-    }
 
     return NextResponse.json({
       success: true,

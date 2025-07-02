@@ -17,6 +17,7 @@ export default function AddCourses() {
   const [loading, setloading] = useState(false);
   const [videoTitle, setVideoTitle] = useState("");
   const [videoFile, setVideoFile] = useState<File | null>(null);
+  const [msg, setMsg] = useState({error: "", success: ""});
 
   const existingCourse = courses.find((c) => c.id === courseId);
 
@@ -45,7 +46,6 @@ export default function AddCourses() {
 
     try {
       const keys = await useGetKeys();
-      console.log("keys", keys);
       const { BUNNY_API_KEY, LIBRARY_ID } = keys;
 
       const bunnyVideoData = await createBunnyVideo(
@@ -79,16 +79,19 @@ export default function AddCourses() {
           bunnyVideoId: bunnyVideoData.guid,
         });
 
-        alert("Video uploaded successfully!");
+        setMsg({ error: "", success: "Video uploaded successfully!" });
         setloading(false);
         setVideoTitle("");
         setVideoFile(null);
+        setTimeout(() => {
+          setMsg({ error: "", success: "" });
+        }, 3000); 
       } else {
-        alert("Failed to upload video. Please try again.");
+        setMsg({ error: "Failed to upload video. Please try again.", success: "" });
       }
     } catch (error) {
       console.error("Error uploading video:", error);
-      alert("Failed to upload video. Please try again.");
+      setMsg({ error: "An error occurred while uploading the video.", success: "" });
     }finally {
       setloading(false);
     }
@@ -101,6 +104,16 @@ export default function AddCourses() {
 
         {/* Upload Form */}
         <section className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-6">
+        {msg.success && (
+          <div className="bg-green-100 text-green-800 p-4 rounded-md mb-4">
+            {msg.success}
+          </div>
+        )}
+        {msg.error && (
+          <div className="bg-red-100 text-red-800 p-4 rounded-md mb-4">
+            {msg.error}
+          </div>
+        )}
           <h3 className="text-xl font-bold text-gray-800 dark:text-white mb-4">
             Upload New Video
           </h3>
