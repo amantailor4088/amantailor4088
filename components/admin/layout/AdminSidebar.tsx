@@ -4,10 +4,8 @@ import { usePathname } from "next/navigation";
 import { Home, BookOpen, Users, BarChart2 } from "lucide-react";
 
 const navItems = [
-  { label: "Dashboard", href: "/admin", icon: <Home size={18} /> },
-  { label: "Courses", href: "/admin/courses", icon: <BookOpen size={18} /> },
+  { label: "Courses", href: "/admin", icon: <BookOpen size={18} /> },
   { label: "Users", href: "/admin/users", icon: <Users size={18} /> },
-  { label: "Reports", href: "/admin/reports", icon: <BarChart2 size={18} /> },
 ];
 
 export default function AdminSidebar() {

@@ -10,7 +10,6 @@ import { rateLimit } from "@/lib/ratelimit"; // basic in-memory rate limiter
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-
     const ip = req.headers.get("x-forwarded-for") || "unknown";
     if (!rateLimit(ip, 5, 15 * 60 * 1000)) {
       return NextResponse.json(

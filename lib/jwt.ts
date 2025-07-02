@@ -33,8 +33,8 @@ export async function verifyTokenFromCookies(): Promise<CustomJwtPayload | null>
     if (!token) return null;
 
     const decoded = jwt.verify(token, JWT_SECRET) as CustomJwtPayload;
-
     return decoded;
+    
   } catch (error) {
     console.error("JWT verification failed:", error);
     return null;

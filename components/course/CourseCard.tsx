@@ -4,38 +4,37 @@ type Course = {
     title: string;
     description: string;
     price: number;
-    thumbnailUrl: string;
-    slug: string;
+    thumbnail: string;
+    id: string;
 };
 
 type CourseCardProps = {
-  course: Course;
+  existingCourse: Course;
 };
 
-export default function CourseCard({ course }: CourseCardProps) {
+export default function CourseCard({ existingCourse }: CourseCardProps) {
   return (
-    <div className="border rounded-lg overflow-hidden shadow bg-white dark:bg-gray-800">
-      <img
-        src={course.thumbnailUrl}
-        alt={course.title}
-        className="w-full h-48 object-cover"
-      />
-      <div className="p-4">
-        <h3 className="text-xl font-bold mb-2 text-gray-800 dark:text-gray-100">
-          {course.title}
-        </h3>
-        <p className="text-gray-600 dark:text-gray-400 mb-3">
-          {course.description.slice(0, 80)}...
-        </p>
-        <p className="text-indigo-600 font-bold mb-3">
-          ₹{course.price}
-        </p>
-        <Link href={`/courses/${course.slug}`}>
-          <button className="w-full bg-green-600 hover:bg-green-700 text-white font-semibold py-2 rounded">
-            Buy Now
-          </button>
-        </Link>
-      </div>
-    </div>
+    <div className="bg-white dark:bg-neutral-800 rounded-xl shadow-lg p-6 flex flex-col md:flex-row gap-6">
+          <div className="flex-shrink-0 w-full md:w-48 h-40 overflow-hidden rounded-lg border dark:border-neutral-600">
+            <img
+              src={existingCourse.thumbnail}
+              alt={existingCourse.title}
+              width={300}
+              height={200}
+              className="object-cover w-full h-full"
+            />
+          </div>
+          <div className="flex-1">
+            <h2 className="text-2xl md:text-3xl font-bold text-gray-800 dark:text-white mb-2">
+              {existingCourse.title}
+            </h2>
+            <p className="text-gray-600 dark:text-gray-300 mb-2">
+              {existingCourse.description}
+            </p>
+            <p className="text-green-700 dark:text-green-400 text-lg font-semibold">
+              ₹{existingCourse.price}
+            </p>
+          </div>
+        </div>
   );
 }

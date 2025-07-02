@@ -5,10 +5,8 @@ import { motion, AnimatePresence } from "framer-motion";
 import { Home, BookOpen, Users, BarChart2 } from "lucide-react";
 
 const tabs = [
-  { label: "Dashboard", href: "/admin", icon: Home },
-  { label: "Courses", href: "/admin/courses", icon: BookOpen },
-  { label: "Users", href: "/admin/users", icon: Users },
-  { label: "Reports", href: "/admin/reports", icon: BarChart2 },
+   { label: "Courses", href: "/admin", icon: BookOpen },
+    { label: "Users", href: "/admin/users", icon: Users },
 ];
 
 export default function AdminMobileSwitcher() {

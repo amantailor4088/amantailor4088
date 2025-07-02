@@ -1,13 +1,22 @@
 
 import { useState } from "react";
 
-type Course = {
-    title: string;
-    description: string;
-    price: number;
-    thumbnail: string;
-    slug: string;
-}
+export type Video = {
+  title: string;
+  embedUrl: string;
+  bunnyVideoId: string;
+};
+
+export type Course = {
+  id: string;
+  title: string;
+  description: string;
+  price: number;
+  thumbnail: string;
+  videos: Video[];
+  category?: string;
+};
+
 export const useGetCourses =()=> {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
