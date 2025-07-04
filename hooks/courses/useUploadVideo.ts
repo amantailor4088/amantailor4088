@@ -30,10 +30,8 @@ export const useUploadVideo = () => {
       }
 
       const result = await response.json();
-      console.log("Video uploaded successfully:", result);
       return result;
     } catch (error: any) {
-      console.error("Error uploading video:", error);
       setError(error.message || "Something went wrong");
       throw error;
     } finally {

@@ -46,7 +46,7 @@ export async function POST(req: NextRequest) {
       const arrayBuffer = await thumbnailFile.arrayBuffer();
       const buffer = Buffer.from(arrayBuffer);
 
-      const fileName = `thumbnails/-${Date.now()}-${thumbnailFile.name}`;
+      const fileName = `thumbnails/${Date.now()}-${thumbnailFile.name}`;
 
       thumbnailUrl = await uploadThumbnailToBunny(fileName, buffer);
       console.log("Thumbnail uploaded to Bunny Storage:", thumbnailUrl);
