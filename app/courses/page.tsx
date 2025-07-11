@@ -86,7 +86,7 @@ export default function CoursesPage() {
       </section>
       {/* User’s Purchased Courses Section */}
       {user && user.coursesPurchased?.length > 0 && (
-        <section className="mb-12">
+        <section className="mb-12" id="my-courses">
           <h2 className="text-3xl md:text-4xl font-extrabold text-gray-800 mb-6 text-center">
             Your Purchased Courses
           </h2>

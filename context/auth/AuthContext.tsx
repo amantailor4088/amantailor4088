@@ -9,7 +9,7 @@ interface UserType {
   email: string;
   role: string;
   isVerified: boolean;
-  coursesPurchased: any[];
+  coursesPurchased: string[];
 }
 
 interface AuthContextProps {
@@ -36,6 +36,7 @@ export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
       }
     }
   }, []);
+  
 
   const logout = async () => {
     localStorage.removeItem("authUser");

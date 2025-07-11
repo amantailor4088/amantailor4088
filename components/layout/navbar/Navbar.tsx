@@ -123,7 +123,7 @@ const Navbar = () => {
 
                     <button
                       onClick={() => {
-                        router.push(user.role !== "user" ? "/admin" : "/user/myCourses");
+                        router.push(user.role !== "user" ? "/admin" : "/courses/#myCourses");
                         setDropdownOpen(false);
                       }}
                       className="w-full text-left px-4 py-2 text-sm text-gray-700 dark:text-gray-300 hover:bg-purple-50 dark:hover:bg-purple-700 transition"

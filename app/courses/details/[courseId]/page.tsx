@@ -13,11 +13,15 @@ import {
   FaCertificate,
   FaClock,
 } from "react-icons/fa"; // Added FaRupeeSign, FaCertificate, FaClock
+import PurchaseButton from "@/components/course/PurchaseButton";
+import { useState } from "react";
+import VideoCard from "@/components/course/VideoCard";
 
 export default function CourseDetailPage() {
   const { courseId } = useParams() as { courseId: string };
   const { courses, loading } = useCourseContext();
   const { user } = useAuth();
+  const [expandedVideoId, setExpandedVideoId] = useState<string | null>(null);
 
   const existingCourse = courses.find((c) => c.id === courseId);
 
@@ -125,30 +129,55 @@ export default function CourseDetailPage() {
 
             {existingCourse.videos?.length > 0 ? (
               <ul className="divide-y divide-gray-200 dark:divide-neutral-700">
-                {existingCourse.videos.map((video, index) => (
-                  <li
-                    key={video.bunnyVideoId}
-                    className="flex items-center justify-between py-3 px-2 group hover:bg-gray-50 dark:hover:bg-neutral-700 transition duration-150 ease-in-out cursor-pointer"
-                  >
-                    <div className="flex items-center">
-                      <span className="text-gray-500 dark:text-gray-400 text-sm font-semibold mr-3 w-6 text-center">
-                        {index + 1}.
-                      </span>
-                      <span className="text-gray-800 dark:text-gray-100 font-medium text-base">
-                        {video.title}
-                      </span>
-                    </div>
-                    {userHasPurchased ? (
-                      <span className="text-green-600 dark:text-green-400 text-xs font-semibold flex items-center">
-                        <FaEye className="mr-1" /> View
-                      </span>
-                    ) : (
-                      <span className="text-red-600 dark:text-red-400 text-xs font-semibold flex items-center">
-                        <FaLock className="mr-1" /> Locked
-                      </span>
-                    )}
-                  </li>
-                ))}
+                {existingCourse.videos.map((video, index) => {
+                  const isExpanded = expandedVideoId === video.bunnyVideoId;
+
+                  return (
+                    <li
+                      key={video.bunnyVideoId}
+                      className="py-4 px-2 transition duration-150 ease-in-out"
+                    >
+                      <div className="flex items-center justify-between">
+                        <div className="flex items-center">
+                          <span className="text-gray-500 dark:text-gray-400 text-sm font-semibold mr-3 w-6 text-center">
+                            {index + 1}.
+                          </span>
+                          <span className="text-gray-800 dark:text-gray-100 font-medium text-base">
+                            {video.title}
+                          </span>
+                        </div>
+
+                        {userHasPurchased ? (
+                          <button
+                            onClick={() =>
+                              setExpandedVideoId(
+                                isExpanded ? null : video.bunnyVideoId
+                              )
+                            }
+                            className={`${
+                              isExpanded
+                                ? "bg-green-600 text-white"
+                                : "text-green-600 dark:text-green-400"
+                            } text-xs font-semibold flex items-center px-3 py-1 rounded-full border border-green-600 hover:bg-green-700 hover:text-white transition`}
+                          >
+                            <FaEye className="mr-1" />
+                            {isExpanded ? "Hide" : "View"}
+                          </button>
+                        ) : (
+                          <span className="text-red-600 dark:text-red-400 text-xs font-semibold flex items-center">
+                            <FaLock className="mr-1" /> Locked
+                          </span>
+                        )}
+                      </div>
+
+                      {userHasPurchased && isExpanded && (
+                        <div className="mt-4">
+                          <VideoCard video={video} />
+                        </div>
+                      )}
+                    </li>
+                  );
+                })}
               </ul>
             ) : (
               <p className="text-gray-600 dark:text-gray-300 text-base italic">
@@ -189,9 +218,10 @@ export default function CourseDetailPage() {
                   Unlock all high-quality course videos, exercises, and
                   exclusive resources to master this topic.
                 </p>
-                <button className="w-full bg-gradient-to-r from-green-500 to-teal-600 hover:from-green-600 hover:to-teal-700 text-white font-bold py-3 rounded-lg shadow-md transform hover:scale-105 transition duration-300 ease-in-out text-lg">
-                  Buy Now – ₹{existingCourse.price}
-                </button>
+                <PurchaseButton
+                  price={existingCourse.price}
+                  courseId={existingCourse.id}
+                />
               </>
             )}
           </div>

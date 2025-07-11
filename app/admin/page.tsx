@@ -1,15 +1,24 @@
 "use client";
 
-import { useState } from "react";
+import { use, useState } from "react";
 import { motion } from "framer-motion";
 import CourseTable from "@/components/admin/courses/CourseTable";
 import AddCourseModal from "@/components/admin/courses/add/CourseAddModel";
 import { useCourseContext } from "@/context/course/CourseContext";
-
+import { useAuth } from "@/context/auth/AuthContext";
+import { useRouter } from "next/navigation";
+import { useEffect } from "react";
 
 export default function AdminCoursesPage() {
   const [addCourse, setAddCourse] = useState(false);
-  const { courses , loading , error,refetchCourses} = useCourseContext();
+  const { user } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (user?.role !== "admin") {
+      router.push("/courses");
+    }
+  }, [user, router]);
 
   return (
     <section className="min-h-screen px-4 sm:px-6 lg:px-8 py-10 bg-white dark:bg-neutral-900">

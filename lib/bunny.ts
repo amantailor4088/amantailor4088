@@ -41,8 +41,7 @@ export async function createBunnyVideo(
   return data;
 }
 
-export async function uploadBunnyVideo(videoId: string,videoFile: File,BUNNY_API_KEY: string,LIBRARY_ID: string
-) {
+export async function uploadBunnyVideo(videoId: string,videoFile: File,BUNNY_API_KEY: string,LIBRARY_ID: string) {
   const url = `https://video.bunnycdn.com/library/${LIBRARY_ID}/videos/${videoId}`;
 
   // Convert video file to ArrayBuffer

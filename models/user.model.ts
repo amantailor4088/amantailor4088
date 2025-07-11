@@ -1,38 +1,18 @@
 import mongoose, { Schema, Document, Types } from "mongoose";
 
-interface PurchasedCourse {
-  course: Types.ObjectId;
-  courseExpiresAt: Date;
-}
-
 export interface UserDocument extends Document {
   name: string;
   email: string;
   password: string;
-  role: "admin" | "coadmin" | "user";
+  role: "admin" | "user";
   isVerified: boolean;
   otp: string | null;
   otpExpiresAt: Date | null;
   sessionToken: string | null;
-  coursesPurchased: PurchasedCourse[];
+  coursesPurchased: Types.ObjectId[];
   createdAt: Date;
   updatedAt: Date;
 }
-
-const PurchasedCourseSchema = new Schema<PurchasedCourse>(
-  {
-    course: {
-      type: Schema.Types.ObjectId,
-      ref: "Course",
-      required: true,
-    },
-    courseExpiresAt: {
-      type: Date,
-      required: true,
-    },
-  },
-  { _id: false }
-);
 
 const UserSchema = new Schema<UserDocument>(
   {
@@ -59,7 +39,7 @@ const UserSchema = new Schema<UserDocument>(
 
     role: {
       type: String,
-      enum: ["admin", "coadmin", "user"],
+      enum: ["admin", "user"],
       default: "user",
     },
 
@@ -84,12 +64,13 @@ const UserSchema = new Schema<UserDocument>(
     },
 
     coursesPurchased: {
-      type: [PurchasedCourseSchema],
+      type: [Schema.Types.ObjectId],
+      ref: "Course",
       default: [],
     },
   },
   {
-    timestamps: true, // adds createdAt & updatedAt
+    timestamps: true,
   }
 );
 

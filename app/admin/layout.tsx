@@ -14,7 +14,7 @@ export default function AdminLayout({ children }: { children: ReactNode }) {
 
  if(user?.role === "user") {
     return (
-      router.push("/user/myCourses")
+      router.push("/courses")
     )
   }else{
     return (
