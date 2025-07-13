@@ -1,23 +1,15 @@
-
 import { useState } from "react";
-
-export type Video = {
-  title: string;
-  embedUrl: string;
-  bunnyVideoId: string;
-};
 
 export type Course = {
   id: string;
   title: string;
   description: string;
   price: number;
-  thumbnail: string;
-  videos: Video[];
   category?: string;
+  videos: string[];
 };
 
-export const useGetCourses =()=> {
+export const useGetCourses = () => {
   const [courses, setCourses] = useState<Course[]>([]);
   const [loading, setLoading] = useState<boolean>(false);
   const [error, setError] = useState<string | null>(null);
@@ -34,7 +26,6 @@ export const useGetCourses =()=> {
       const data = await response.json();
       setCourses(data.data);
       console.log("Fetched courses:", data.data);
-      
     } catch (err: any) {
       console.error("Error fetching courses:", err);
       setError(err.message || "Something went wrong");
@@ -43,5 +34,5 @@ export const useGetCourses =()=> {
     }
   };
 
-  return { courses, loading, error, fetchCourses,setCourses };
-}
+  return { courses, loading, error, fetchCourses, setCourses };
+};

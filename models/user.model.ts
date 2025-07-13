@@ -63,11 +63,12 @@ const UserSchema = new Schema<UserDocument>(
       default: null,
     },
 
-    coursesPurchased: {
-      type: [Schema.Types.ObjectId],
-      ref: "Course",
-      default: [],
-    },
+    coursesPurchased: [
+      {
+        type: Schema.Types.ObjectId,
+        ref: "Course",
+      },
+    ],
   },
   {
     timestamps: true,

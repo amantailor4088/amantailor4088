@@ -1,15 +1,4 @@
-// /models/course.model.ts
-
 import mongoose from "mongoose";
-
-const videoSchema = new mongoose.Schema(
-  {
-    title: { type: String, required: true },
-    bunnyVideoId: { type: String, required: true },
-    embedUrl: { type: String, required: true },
-  },
-  { _id: false }
-);
 
 const courseSchema = new mongoose.Schema(
   {
@@ -17,8 +6,7 @@ const courseSchema = new mongoose.Schema(
     description: { type: String },
     price: { type: Number, required: true },
     category: { type: String, required: true },
-    thumbnail: { type: String, required: true },
-    videos: { type: [videoSchema], default: [] },
+    videos: { type: [String], default: [] }, // Only YouTube links
   },
   { timestamps: true }
 );

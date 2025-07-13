@@ -13,22 +13,24 @@ export function useAddCourse() {
     description: string;
     price: string;
     category: string;
-    thumbnail: File;
+    videos: string[];
   }) => {
     try {
       setLoading(true);
       setError(null);
 
-      const formData = new FormData();
-      formData.append("title", data.title);
-      formData.append("description", data.description);
-      formData.append("price", data.price);
-      formData.append("category", data.category);
-      formData.append("thumbnail", data.thumbnail);
-
       const res = await fetch("/api/course/addCourse", {
         method: "POST",
-        body: formData,
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          title: data.title,
+          description: data.description,
+          price: Number(data.price),
+          category: data.category,
+          videos: data.videos,
+        }),
       });
 
       const json = await res.json();
@@ -37,11 +39,9 @@ export function useAddCourse() {
         throw new Error(json.message || "Failed to add course.");
       }
 
-
       // ⬇️ Save in context
       addCourse(json.course);
       return json.course;
-      
     } catch (err: any) {
       console.error(err);
       setError(err.message || "Something went wrong.");

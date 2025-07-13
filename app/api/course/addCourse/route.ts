@@ -1,15 +1,15 @@
 import { NextRequest, NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Course from "@/models/course.model";
-import { uploadThumbnailToBunny } from "@/lib/bunny";
 import { verifyTokenFromCookies } from "@/lib/jwt";
 
 export async function POST(req: NextRequest) {
   try {
     await connectDB();
-    //  Verify admin access
 
+    // ✅ Verify admin access
     const user = await verifyTokenFromCookies();
+
     if (!user) {
       return NextResponse.json(
         { success: false, message: "Unauthorized" },
@@ -23,12 +23,11 @@ export async function POST(req: NextRequest) {
         { status: 403 }
       );
     }
-    const formData = await req.formData();
-    const title = formData.get("title") as string;
-    const description = formData.get("description") as string;
-    const price = Number(formData.get("price"));
-    const category =
-      (formData.get("category") as string)?.trim() || "Uncategorized";
+
+    // ✅ Get JSON body
+    const body = await req.json();
+
+    const { title, description, price, category, videos } = body;
 
     if (!title || !description || !price || !category) {
       return NextResponse.json(
@@ -37,52 +36,31 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Handle thumbnail upload
-    const thumbnailFile = formData.get("thumbnail") as File | null;
-
-    let thumbnailUrl: string | null = null;
-
-    if (thumbnailFile) {
-      const arrayBuffer = await thumbnailFile.arrayBuffer();
-      const buffer = Buffer.from(arrayBuffer);
-
-      const fileName = `thumbnails/${Date.now()}-${thumbnailFile.name}`;
-
-      thumbnailUrl = await uploadThumbnailToBunny(fileName, buffer);
-      console.log("Thumbnail uploaded to Bunny Storage:", thumbnailUrl);
-    } else {
-      return NextResponse.json(
-        { success: false, message: "Thumbnail image is required." },
-        { status: 400 }
-      );
-    }
-
-    // ✅ Create the course with basic info only
+    // ✅ Create the course
     const courseDoc = await Course.create({
       title,
       description,
       price,
       category,
-      thumbnail: thumbnailUrl,
-      videos: [],
+      videos: videos || [],
     });
 
     return NextResponse.json({
       success: true,
       message: "Course created successfully!",
       course: {
+        id: courseDoc._id.toString(),
         title,
         description,
         price,
         category,
-        thumbnail: thumbnailUrl,
-        id: courseDoc._id.toString(),
+        videos: courseDoc.videos,
       },
     });
   } catch (err) {
     console.error(err);
     return NextResponse.json(
-      { success: false, message: "Upload failed!" },
+      { success: false, message: "Course creation failed!" },
       { status: 500 }
     );
   }

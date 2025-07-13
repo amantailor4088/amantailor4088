@@ -3,13 +3,6 @@
 import { NextResponse } from "next/server";
 import { connectDB } from "@/lib/db";
 import Course from "@/models/course.model";
-import { verifyTokenFromCookies } from "@/lib/jwt";
-
-type Video = {
-  title: string;
-  embedUrl: string;
-  bunnyVideoId: string;
-};
 
 export async function GET() {
   await connectDB();
@@ -23,12 +16,8 @@ export async function GET() {
       title: c.title,
       description: c.description,
       price: c.price,
-      thumbnail: c.thumbnail,
-      videos: c.videos.map((v: Video) => ({
-        title: v.title,
-        embedUrl: v.embedUrl,
-        bunnyVideoId: v.bunnyVideoId,
-      })),
+      category: c.category,
+      videos: c.videos, // now simply an array of strings
     })),
   });
 }
