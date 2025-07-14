@@ -145,12 +145,12 @@ export default function CourseModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center overflow-auto">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl w-full max-w-xl p-8 relative border border-gray-200 dark:border-neutral-700"
+        className="bg-white dark:bg-neutral-900 rounded-2xl overflow-y-auto  mt-[25%] shadow-2xl w-full max-w-xl p-8 relative border border-gray-200 dark:border-neutral-700"
       >
         <h2 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-white text-center">
           {mode === "edit" ? "Edit Course" : "Add New Course"}

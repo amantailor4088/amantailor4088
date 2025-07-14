@@ -23,7 +23,7 @@ export default function PurchaseButton({
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
-  const netPrice = discount > 0  && discount < price ? price - discount : price
+  const netPrice = discount > 0  && discount < price ? price - discount : price;
 
   const handlePayment = async () => {
     if (!user) {

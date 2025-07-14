@@ -122,7 +122,7 @@ const CourseTable = () => {
                 Sr No. {index + 1}
               </span>
               <span className="text-sm text-gray-700 dark:text-gray-300">
-                ₹{course.price}
+                ₹{course.price - course.discountPrice}
               </span>
             </div>
              <h3 className="text-base font-semibold text-gray-800 dark:text-white mb-1 hover:underline">

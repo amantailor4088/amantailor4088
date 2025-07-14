@@ -90,60 +90,70 @@ export default function CoursesPage() {
               .filter((course) => user.coursesPurchased.includes(course.id))
               .map((course) => (
                 <Link
-  href={`/courses/details/${course.id}`}
-  key={course.id}
-  className="block"
->
-  <div className="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col h-full p-6">
-    {/* Card Header */}
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center space-x-3">
-        <div className="bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-full p-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 14l9-5-9-5-9 5 9 5z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 14l6.16-3.422A12.042 12.042 0 0112 21.5a12.042 12.042 0 01-6.16-10.922L12 14z"
-            />
-          </svg>
-        </div>
-        <h3 className="text-xl font-extrabold text-gray-900 dark:text-gray-100">
-          {course.title}
-        </h3>
-      </div>
-      <span className="bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full">
-        ₹{course.price}
-      </span>
-    </div>
+                  href={`/courses/details/${course.id}`}
+                  key={course.id}
+                  className="block"
+                >
+                  <div className="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col h-full p-6">
+                    {/* Card Header */}
+                    <div className="flex items-center justify-between mb-4">
+                      <div className="flex items-center space-x-3">
+                        <div className="bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-full p-3">
+                          <svg
+                            xmlns="http://www.w3.org/2000/svg"
+                            className="h-6 w-6"
+                            fill="none"
+                            viewBox="0 0 24 24"
+                            stroke="currentColor"
+                            strokeWidth={2}
+                          >
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 14l9-5-9-5-9 5 9 5z"
+                            />
+                            <path
+                              strokeLinecap="round"
+                              strokeLinejoin="round"
+                              d="M12 14l6.16-3.422A12.042 12.042 0 0112 21.5a12.042 12.042 0 01-6.16-10.922L12 14z"
+                            />
+                          </svg>
+                        </div>
+                        <h3 className="text-xl font-extrabold text-gray-900 dark:text-gray-100">
+                          {course.title}
+                        </h3>
+                      </div>
+                      <div className="flex items-center space-x-2">
+                        {course.discountPrice < course.price && (
+                          <span className="text-gray-500 dark:text-gray-400 line-through text-sm">
+                            ₹{course.price}
+                          </span>
+                        )}
+                        <span className="bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full">
+                          ₹
+                          {course.discountPrice < course.price
+                            ? course.price - course.discountPrice
+                            : course.price}
+                        </span>
+                      </div>
+                    </div>
 
-    {/* Description */}
-    <p className="text-gray-600 dark:text-gray-300 text-sm flex-grow mb-6">
-      {course.description?.slice(0, 120) || "No description available..."}
-    </p>
+                    {/* Description */}
+                    <p className="text-gray-600 dark:text-gray-300 text-sm flex-grow mb-6">
+                      {course.description?.slice(0, 120) ||
+                        "No description available..."}
+                    </p>
 
-    <div className="flex justify-between items-center mt-auto">
-      <span className="text-sm text-gray-500 dark:text-gray-400">
-        Lifetime Access
-      </span>
-      <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
-        View Details
-      </button>
-    </div>
-  </div>
-</Link>
-
+                    <div className="flex justify-between items-center mt-auto">
+                      <span className="text-sm text-gray-500 dark:text-gray-400">
+                        Lifetime Access
+                      </span>
+                      <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                        View Details
+                      </button>
+                    </div>
+                  </div>
+                </Link>
               ))}
           </div>
         </section>
@@ -176,61 +186,71 @@ export default function CoursesPage() {
       ) : (
         <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-3 gap-10">
           {courses.map((course) => (
-           <Link
-  href={`/courses/details/${course.id}`}
-  key={course.id}
-  className="block"
->
-  <div className="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col h-full p-6">
-    {/* Card Header */}
-    <div className="flex items-center justify-between mb-4">
-      <div className="flex items-center space-x-3">
-        <div className="bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-full p-3">
-          <svg
-            xmlns="http://www.w3.org/2000/svg"
-            className="h-6 w-6"
-            fill="none"
-            viewBox="0 0 24 24"
-            stroke="currentColor"
-            strokeWidth={2}
-          >
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 14l9-5-9-5-9 5 9 5z"
-            />
-            <path
-              strokeLinecap="round"
-              strokeLinejoin="round"
-              d="M12 14l6.16-3.422A12.042 12.042 0 0112 21.5a12.042 12.042 0 01-6.16-10.922L12 14z"
-            />
-          </svg>
-        </div>
-        <h3 className="text-xl font-extrabold text-gray-900 dark:text-gray-100">
-          {course.title}
-        </h3>
-      </div>
-      <span className="bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full">
-        ₹{course.price}
-      </span>
-    </div>
+            <Link
+              href={`/courses/details/${course.id}`}
+              key={course.id}
+              className="block"
+            >
+              <div className="bg-white dark:bg-neutral-800 border border-gray-200 dark:border-neutral-700 rounded-xl shadow-lg hover:shadow-xl transform hover:-translate-y-1 transition duration-300 flex flex-col h-full p-6">
+                {/* Card Header */}
+                <div className="flex items-center justify-between mb-4">
+                  <div className="flex items-center space-x-3">
+                    <div className="bg-gradient-to-br from-pink-500 to-purple-600 text-white rounded-full p-3">
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        className="h-6 w-6"
+                        fill="none"
+                        viewBox="0 0 24 24"
+                        stroke="currentColor"
+                        strokeWidth={2}
+                      >
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 14l9-5-9-5-9 5 9 5z"
+                        />
+                        <path
+                          strokeLinecap="round"
+                          strokeLinejoin="round"
+                          d="M12 14l6.16-3.422A12.042 12.042 0 0112 21.5a12.042 12.042 0 01-6.16-10.922L12 14z"
+                        />
+                      </svg>
+                    </div>
+                    <h3 className="text-xl font-extrabold text-gray-900 dark:text-gray-100">
+                      {course.title}
+                    </h3>
+                  </div>
+                  <div className="flex items-center space-x-2">
+                    {course.discountPrice < course.price && (
+                      <span className="text-gray-500 dark:text-gray-400 line-through text-sm">
+                        ₹{course.price}
+                      </span>
+                    )}
+                    <span className="bg-green-100 text-green-800 text-sm font-bold px-3 py-1 rounded-full">
+                      ₹
+                      {course.discountPrice < course.price
+                        ? course.price - course.discountPrice
+                        : course.price}
+                    </span>
+                  </div>
+                </div>
 
-    {/* Description */}
-    <p className="text-gray-600 dark:text-gray-300 text-sm flex-grow mb-6">
-      {course.description?.slice(0, 120) || "No description available..."}
-    </p>
+                {/* Description */}
+                <p className="text-gray-600 dark:text-gray-300 text-sm flex-grow mb-6">
+                  {course.description?.slice(0, 120) ||
+                    "No description available..."}
+                </p>
 
-    <div className="flex justify-between items-center mt-auto">
-      <span className="text-sm text-gray-500 dark:text-gray-400">
-        Lifetime Access
-      </span>
-      <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
-        View Details
-      </button>
-    </div>
-  </div>
-</Link>
-
+                <div className="flex justify-between items-center mt-auto">
+                  <span className="text-sm text-gray-500 dark:text-gray-400">
+                    Lifetime Access
+                  </span>
+                  <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
+                    View Details
+                  </button>
+                </div>
+              </div>
+            </Link>
           ))}
         </div>
       )}
