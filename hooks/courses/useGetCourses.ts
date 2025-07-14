@@ -10,8 +10,10 @@ export type Course = {
   title: string;
   description: string;
   price: number;
+  discountPrice: number;
   category?: string;
   expiryDate?: string | null;
+  isRecommended: boolean;
   videos: Video[];
 };
 
@@ -32,10 +34,12 @@ export const useGetCourses = () => {
       const data = await response.json();
 
       const transformedCourses: Course[] = data.data.map((course: any) => ({
-        id: course.id ,
+        id: course.id,
         title: course.title,
         description: course.description,
         price: course.price,
+        discountPrice: course.discountPrice, // ✅ no fallback needed
+        isRecommended: course.isRecommended, // ✅ no fallback needed
         category: course.category,
         expiryDate: course.expiryDate || null,
         videos: course.videos || [],

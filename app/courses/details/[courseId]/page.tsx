@@ -86,6 +86,7 @@ export default function CourseDetailPage() {
             title={existingCourse.title}
             description={existingCourse.description}
             price={existingCourse.price}
+            discountPrice={existingCourse.discountPrice}
           />
 
           <section className="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-8">
@@ -181,6 +182,7 @@ export default function CourseDetailPage() {
                 </p>
                 <PurchaseButton
                   price={existingCourse.price}
+                  discount = {existingCourse.discountPrice}
                   courseId={existingCourse.id}
                 />
               </>

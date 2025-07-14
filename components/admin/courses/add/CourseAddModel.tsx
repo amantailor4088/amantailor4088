@@ -13,6 +13,8 @@ export type ExistingCourseType = {
   title: string;
   description: string;
   price: number;
+  discountPrice: number;
+  isRecommended: boolean;
   category?: string;
   expiryDate?: string | null;
   videos: {
@@ -50,6 +52,8 @@ export default function CourseModal({
   const [title, setTitle] = useState("");
   const [description, setDescription] = useState("");
   const [price, setPrice] = useState("");
+  const [discountPrice, setDiscountPrice] = useState("");
+  const [isRecommended, setIsRecommended] = useState(false);
   const [category, setCategory] = useState("");
   const [durationDays, setDurationDays] = useState("");
   const [videos, setVideos] = useState<VideoInput[]>([{ title: "", url: "" }]);
@@ -59,15 +63,19 @@ export default function CourseModal({
       setTitle(course.title);
       setDescription(course.description);
       setPrice(course.price.toString());
+      setDiscountPrice(course.discountPrice.toString());
+      setIsRecommended(course.isRecommended);
       setCategory(course.category || "");
       setVideos(
         course.videos.length > 0 ? course.videos : [{ title: "", url: "" }]
       );
-      setDurationDays(""); // you could pre-fill this if needed
+      setDurationDays(""); // optionally pre-fill if needed
     } else if (mode === "add") {
       setTitle("");
       setDescription("");
       setPrice("");
+      setDiscountPrice("");
+      setIsRecommended(false);
       setCategory("");
       setDurationDays("");
       setVideos([{ title: "", url: "" }]);
@@ -84,8 +92,7 @@ export default function CourseModal({
     setVideos(updated);
   };
 
-  const addVideoField = () =>
-    setVideos([...videos, { title: "", url: "" }]);
+  const addVideoField = () => setVideos([...videos, { title: "", url: "" }]);
 
   const removeVideoField = (index: number) =>
     setVideos(videos.filter((_, i) => i !== index));
@@ -93,9 +100,7 @@ export default function CourseModal({
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
 
-    const preparedVideos = videos.filter(
-      (v) => v.title.trim() && v.url.trim()
-    );
+    const preparedVideos = videos.filter((v) => v.title.trim() && v.url.trim());
 
     try {
       if (mode === "add") {
@@ -103,6 +108,8 @@ export default function CourseModal({
           title,
           description,
           price,
+          discountPrice,
+          isRecommended,
           category,
           durationDays: durationDays ? Number(durationDays) : undefined,
           videos: preparedVideos,
@@ -118,6 +125,8 @@ export default function CourseModal({
           title,
           description,
           price: Number(price),
+          discountPrice: Number(discountPrice),
+          isRecommended,
           category,
           durationDays: durationDays ? Number(durationDays) : undefined,
           videos: preparedVideos,
@@ -136,77 +145,136 @@ export default function CourseModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/40 backdrop-blur-sm flex items-center justify-center">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white dark:bg-neutral-900 rounded-xl shadow-lg w-full max-w-xl p-6 relative"
+        className="bg-white dark:bg-neutral-900 rounded-2xl shadow-2xl w-full max-w-xl p-8 relative border border-gray-200 dark:border-neutral-700"
       >
-        <h2 className="text-2xl font-bold mb-4 text-gray-900 dark:text-white">
+        <h2 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-white text-center">
           {mode === "edit" ? "Edit Course" : "Add New Course"}
         </h2>
 
         {(addError || updateError) && (
-          <div className="bg-red-100 text-red-700 p-3 rounded mb-4 text-sm">
+          <div className="bg-red-100 text-red-700 p-4 rounded mb-5 text-sm border border-red-200">
             {addError || updateError}
           </div>
         )}
 
-        <form onSubmit={handleSubmit} className="space-y-4">
-          <input
-            type="text"
-            placeholder="Course Title"
-            value={title}
-            onChange={(e) => setTitle(e.target.value)}
-            className="input w-full"
-            required
-          />
+        <form onSubmit={handleSubmit} className="space-y-5">
+          {/* Title */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Course Title
+            </label>
+            <input
+              type="text"
+              placeholder="e.g. Basic Stitching"
+              value={title}
+              onChange={(e) => setTitle(e.target.value)}
+              className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
+              required
+            />
+          </div>
 
-          <textarea
-            placeholder="Course Description"
-            rows={3}
-            value={description}
-            onChange={(e) => setDescription(e.target.value)}
-            className="input w-full"
-            required
-          />
+          {/* Description */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Description
+            </label>
+            <textarea
+              placeholder="Briefly describe the course..."
+              rows={3}
+              value={description}
+              onChange={(e) => setDescription(e.target.value)}
+              className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
+              required
+            />
+          </div>
 
-          <input
-            type="number"
-            placeholder="Course Price (₹)"
-            value={price}
-            onChange={(e) => setPrice(e.target.value)}
-            className="input w-full"
-            required
-          />
+          {/* Price */}
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Price (₹)
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 499"
+                value={price}
+                onChange={(e) => setPrice(e.target.value)}
+                className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
+                required
+              />
+            </div>
+            <div>
+              <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+                Discount Price (₹)
+              </label>
+              <input
+                type="number"
+                placeholder="e.g. 299"
+                value={discountPrice}
+                onChange={(e) => setDiscountPrice(e.target.value)}
+                className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
+              />
+            </div>
+          </div>
 
-          <select
-            value={category}
-            onChange={(e) => setCategory(e.target.value)}
-            className="input w-full"
-            required
-          >
-            <option value="">Select Category</option>
-            <option value="Stitching Basics">Stitching Basics</option>
-            <option value="Advanced Stitching">Advanced Stitching</option>
-            <option value="Embroidery">Embroidery</option>
-          </select>
+          {/* Recommended Checkbox */}
+          <label className="flex items-center gap-3 text-sm text-gray-700 dark:text-gray-300 mt-2">
+            <input
+              type="checkbox"
+              checked={isRecommended}
+              onChange={(e) => setIsRecommended(e.target.checked)}
+              className="rounded border-gray-300 dark:border-neutral-600 text-purple-600 focus:ring-purple-500"
+            />
+            Mark as Recommended
+          </label>
 
-          <input
-            type="number"
-            placeholder="Expiry Duration (days)"
-            value={durationDays}
-            onChange={(e) => setDurationDays(e.target.value)}
-            className="input w-full"
-          />
+          {/* Category */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Category
+            </label>
+            <select
+              value={category}
+              onChange={(e) => setCategory(e.target.value)}
+              className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
+              required
+            >
+              <option value="">Select Category</option>
+              <option value="Stitching Basics">Stitching Basics</option>
+              <option value="Advanced Stitching">Advanced Stitching</option>
+              <option value="Embroidery">Embroidery</option>
+            </select>
+          </div>
 
-          <div className="space-y-2">
-            <label className="text-sm font-medium text-gray-700 dark:text-gray-300">
+          {/* Duration */}
+          <div>
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1">
+              Expiry Duration (days)
+            </label>
+            <input
+              type="number"
+              placeholder="e.g. 30"
+              value={durationDays}
+              onChange={(e) => setDurationDays(e.target.value)}
+              className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
+            />
+          </div>
+
+          {/* Videos */}
+          <div className="space-y-3">
+            <label className="block text-sm font-medium text-gray-700 dark:text-gray-300">
               Course Videos
             </label>
             {videos.map((video, index) => (
-              <div key={index} className="flex flex-col gap-2">
+              <div
+                key={index}
+                className="border border-gray-200 dark:border-neutral-700 p-3 rounded-md bg-gray-50 dark:bg-neutral-800"
+              >
                 <input
                   type="text"
                   placeholder="Video Title"
@@ -214,7 +282,7 @@ export default function CourseModal({
                   onChange={(e) =>
                     handleVideoChange(index, "title", e.target.value)
                   }
-                  className="input w-full"
+                  className="w-full mb-2 border border-gray-300 dark:border-neutral-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-700 dark:text-white"
                   required
                 />
                 <div className="flex gap-2">
@@ -225,14 +293,14 @@ export default function CourseModal({
                     onChange={(e) =>
                       handleVideoChange(index, "url", e.target.value)
                     }
-                    className="input flex-1"
+                    className="flex-1 border border-gray-300 dark:border-neutral-600 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-700 dark:text-white"
                     required
                   />
                   {videos.length > 1 && (
                     <button
                       type="button"
                       onClick={() => removeVideoField(index)}
-                      className="text-red-600"
+                      className="text-red-600 hover:text-red-800 text-lg"
                     >
                       ✕
                     </button>
@@ -249,9 +317,10 @@ export default function CourseModal({
             </button>
           </div>
 
+          {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-purple-600 hover:bg-purple-700 text-white font-semibold py-3 rounded-md transition"
+            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-md shadow-lg transition duration-200 ease-in-out"
             disabled={adding || updating}
           >
             {adding || updating
@@ -266,9 +335,9 @@ export default function CourseModal({
 
         <button
           onClick={() => setShowModal(false)}
-          className="absolute top-3 right-4 text-xl text-gray-500 dark:text-gray-200"
+          className="absolute top-3 right-3 text-gray-500 hover:text-gray-700 dark:text-gray-300 dark:hover:text-white transition"
         >
-          <IoClose />
+          <IoClose size={24} />
         </button>
       </motion.div>
     </div>

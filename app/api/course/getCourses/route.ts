@@ -16,9 +16,11 @@ export async function GET() {
       title: c.title,
       description: c.description,
       price: c.price,
+      discountPrice: c.discountPrice || null,
       category: c.category,
       expiryDate: c.expiryDate ? c.expiryDate.toISOString() : null,
-      videos: c.videos, // now simply an array of strings
+      isRecommended: c.isRecommended || false,
+      videos: c.videos,
     })),
   });
 }
