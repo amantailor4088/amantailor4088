@@ -1,0 +1,5 @@
+User-agent: *
+Disallow: /api/, /admin/
+Allow: /
+
+Sitemap: https://www.amantailor4088.com/sitemap.xml
