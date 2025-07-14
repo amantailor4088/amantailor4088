@@ -43,7 +43,7 @@ export default function AdminCoursesPage() {
       </div>
 
       {/* Add Modal */}
-      <AddCourseModal isOpen={addCourse} setShowModal={setAddCourse} />
+      <AddCourseModal isOpen={addCourse} setShowModal={setAddCourse} mode="add" />
     </section>
   );
 }
