@@ -9,17 +9,21 @@ import AuthModal from "../login/Auth";
 
 type PurchaseButtonProps = {
   price: number;
+  discount:number;
   courseId: string;
 };
 
 export default function PurchaseButton({
   price,
+  discount,
   courseId,
 }: PurchaseButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
   const { addPurchasedCourse } = useAddPurchasedCourse();
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
+
+  const netPrice = discount > 0  && discount < price ? price - discount : price;
 
   const handlePayment = async () => {
     if (!user) {
@@ -33,7 +37,7 @@ export default function PurchaseButton({
 
       const options = {
         key: process.env.NEXT_PUBLIC_RAZORPAY_KEY_ID,
-        amount: price * 100,
+        amount: netPrice * 100,
         currency: "INR",
         name: "Aman Tailors",
         description: `Purchase of Course: ${courseId}`,
@@ -108,7 +112,7 @@ export default function PurchaseButton({
         onClick={handlePayment}
         disabled={isLoading}
       >
-        {isLoading ? "Processing..." : `Buy Now – ₹ ${price}`}
+        {isLoading ? "Processing..." : `Buy Now – ₹ ${netPrice}`}
       </button>
       <Script
         id="razorpay-checkout-js"

@@ -25,7 +25,17 @@ export async function PATCH(req: NextRequest) {
 
     const body = await req.json();
 
-    const { id, title, description, price, category, durationDays, videos } = body;
+    const {
+      id,
+      title,
+      description,
+      price,
+      discountPrice,
+      category,
+      isRecommended,
+      durationDays,
+      videos,
+    } = body;
 
     if (!id) {
       return NextResponse.json(
@@ -43,15 +53,16 @@ export async function PATCH(req: NextRequest) {
       );
     }
 
-    //  Update fields
+    // ✅ Update fields with default values
     course.title = title || course.title;
     course.description = description || course.description;
-    course.price = price !== undefined ? price : course.price;
+    course.price = price || 0;
+    course.discountPrice = discountPrice || 0;
     course.category = category || course.category;
+    course.isRecommended = isRecommended || false;
     course.videos = videos || course.videos;
 
-    // optionally handle expiry
-    if (durationDays !== undefined) {
+    if (durationDays) {
       const expiryDate = new Date();
       expiryDate.setDate(expiryDate.getDate() + Number(durationDays));
       course.expiryDate = expiryDate;
@@ -67,9 +78,11 @@ export async function PATCH(req: NextRequest) {
         title: course.title,
         description: course.description,
         price: course.price,
+        discountPrice: course.discountPrice,
         category: course.category,
-        videos: course.videos,
+        isRecommended: course.isRecommended,
         expiryDate: course.expiryDate,
+        videos: course.videos,
       },
     });
 

@@ -11,8 +11,10 @@ export interface VideoPayload {
 export interface AddCoursePayload {
   title: string;
   description: string;
-  price: string; // still string from input field
+  price: string; // string from the input field
+  discountPrice?: string; // string from input field, optional
   category: string;
+  isRecommended?: boolean;
   durationDays?: number;
   videos: VideoPayload[];
 }
@@ -36,7 +38,9 @@ export function useAddCourse() {
           title: data.title,
           description: data.description,
           price: Number(data.price),
+          discountPrice: data.discountPrice ? Number(data.discountPrice) : 0,
           category: data.category,
+          isRecommended: data.isRecommended || false,
           durationDays: data.durationDays,
           videos: data.videos,
         }),

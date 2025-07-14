@@ -14,6 +14,8 @@ export type Course = {
   description: string;
   price: number;
   category?: string;
+  discountPrice: number;
+  isRecommended: boolean;
   expiryDate?: string | null;
   videos: Video[];
 };

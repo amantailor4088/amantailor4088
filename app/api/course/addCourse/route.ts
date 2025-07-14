@@ -23,19 +23,26 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Get JSON body
     const body = await req.json();
 
-    const {title,description,price,category,durationDays,videos,} = body;
+    const {
+      title,
+      description,
+      price,
+      discountPrice, // ✅ New
+      category,
+      durationDays,
+      isRecommended, // ✅ New
+      videos,
+    } = body;
 
     if (!title || !description || !price || !category) {
       return NextResponse.json(
-        { success: false, message: "All fields are required." },
+        { success: false, message: "All required fields must be filled." },
         { status: 400 }
       );
     }
 
-    //  Validate videos if provided
     if (videos && !Array.isArray(videos)) {
       return NextResponse.json(
         { success: false, message: "Invalid videos format." },
@@ -43,7 +50,7 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    let expiryDate;
+    let expiryDate: Date | undefined;
     if (durationDays) {
       expiryDate = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
     }
@@ -52,8 +59,10 @@ export async function POST(req: NextRequest) {
       title,
       description,
       price,
+      discountPrice: discountPrice || null,
       category,
-      expiryDate,
+      expiryDate: expiryDate || null,
+      isRecommended: Boolean(isRecommended),
       videos: videos || [],
     });
 
@@ -65,8 +74,10 @@ export async function POST(req: NextRequest) {
         title: courseDoc.title,
         description: courseDoc.description,
         price: courseDoc.price,
+        discountPrice: courseDoc.discountPrice,
         category: courseDoc.category,
         expiryDate: courseDoc.expiryDate,
+        isRecommended: courseDoc.isRecommended,
         videos: courseDoc.videos,
       },
     });

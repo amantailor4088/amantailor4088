@@ -3,9 +3,11 @@ import { useState } from "react";
 
 export type UpdateCoursePayload = {
   id: string;
-  title?: string;
+  title: string;
   description?: string;
-  price?: number;
+  price: number;
+  discountPrice?: number;
+  isRecommended?: boolean;
   category?: string;
   durationDays?: number;
   videos?: {
@@ -13,7 +15,6 @@ export type UpdateCoursePayload = {
     url: string;
   }[];
 };
-
 
 export function useUpdateCourse() {
   const [loading, setLoading] = useState(false);
@@ -40,8 +41,18 @@ export function useUpdateCourse() {
         throw new Error(json.message || "Failed to update course.");
       }
 
-      // Update in context
-      updateCourseInContext(json.course);
+      // ✅ Update the course in context
+      updateCourseInContext({
+        id: json.course.id,
+        title: json.course.title,
+        description: json.course.description,
+        price: json.course.price,
+        discountPrice: json.course.discountPrice,
+        isRecommended: json.course.isRecommended,
+        category: json.course.category,
+        expiryDate: json.course.expiryDate,
+        videos: json.course.videos,
+      });
 
       return json.course;
     } catch (err: any) {
