@@ -3,13 +3,19 @@
 import { createContext, useContext, useEffect } from "react";
 import { useGetCourses } from "@/hooks/courses/useGetCourses";
 
+export type Video = {
+  title: string;
+  url: string;
+};
+
 export type Course = {
   id: string;
   title: string;
   description: string;
   price: number;
   category?: string;
-  videos: string[];
+  expiryDate?: string | null;
+  videos: Video[];
 };
 
 export type CourseContextType = {
@@ -19,12 +25,13 @@ export type CourseContextType = {
   refetchCourses: () => Promise<void>;
   addCourse: (course: Course) => void;
   deleteCourse: (courseId: string) => void;
+  updateCourse : (Course : Course)=> void;
 };
 
 const CourseContext = createContext<CourseContextType | null>(null);
 
 export const CourseProvider = ({
-  children,
+  children,   
 }: {
   children: React.ReactNode;
 }) => {
@@ -39,7 +46,14 @@ export const CourseProvider = ({
     setCourses((prev) => [course, ...prev]);
   };
 
-  
+  const updateCourseInContext = (updatedCourse: Course) => {
+  setCourses((prev) =>
+    prev.map((course) =>
+      course.id === updatedCourse.id ? updatedCourse : course
+    )
+  );
+};
+
   const deleteCourse = (courseId: string) => {
     setCourses((prev) => prev.filter((course) => course.id !== courseId));
   };
@@ -53,7 +67,7 @@ export const CourseProvider = ({
         refetchCourses: fetchCourses,
         addCourse,
         deleteCourse,
-         
+        updateCourse: updateCourseInContext,
       }}
     >
       {children}

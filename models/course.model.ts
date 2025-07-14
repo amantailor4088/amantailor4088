@@ -6,7 +6,13 @@ const courseSchema = new mongoose.Schema(
     description: { type: String },
     price: { type: Number, required: true },
     category: { type: String, required: true },
-    videos: { type: [String], default: [] }, // Only YouTube links
+    expiryDate: { type: Date, default: null },
+    videos: [
+      {
+        title: { type: String, required: true },
+        url: { type: String, required: true }
+      }
+    ]
   },
   { timestamps: true }
 );

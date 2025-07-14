@@ -4,11 +4,26 @@ import { useState } from "react";
 import Link from "next/link";
 import { useCourseContext } from "@/context/course/CourseContext";
 import { useDeleteCourse } from "@/hooks/courses/useDeleteCourse";
+import AddCourseModal, { ExistingCourseType } from "./add/CourseAddModel";
 
 const CourseTable = () => {
   const { courses, loading, error } = useCourseContext();
   const { deleteCourse } = useDeleteCourse();
   const [deletingCourseId, setDeletingCourseId] = useState<string | null>(null);
+  const [showAddCourseModal, setShowAddCourseModal] = useState(false);
+  const [selectedCourse, setSelectedCourse] = useState<ExistingCourseType | null>(null);
+
+ const handleEditCourse = (courseId: string) => {
+  const course = courses.find((c) => c.id === courseId);
+  if (!course) {
+    console.error("Course not found!");
+    return;
+  }
+   
+  setSelectedCourse(course);
+  setShowAddCourseModal(true);
+};
+
 
   const handleDeleteCourse = async (courseId: string) => {
     try {
@@ -72,12 +87,12 @@ const CourseTable = () => {
                 </td>
                 <td className="px-6 py-4">
                   <div className="flex gap-3">
-                    <Link
-                      href={`/admin/uploadVideo/${course.id}`}
+                    <button
+                      onClick={() => handleEditCourse(course.id)}
                       className="text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
                     >
                       Edit
-                    </Link>
+                    </button>
                     <button
                       className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
                       onClick={() => handleDeleteCourse(course.id)}
@@ -110,18 +125,16 @@ const CourseTable = () => {
                 ₹{course.price}
               </span>
             </div>
-            <Link href={`/admin/uploadVideo/${course.id}`}>
-              <h3 className="text-base font-semibold text-gray-800 dark:text-white mb-1 hover:underline">
+             <h3 className="text-base font-semibold text-gray-800 dark:text-white mb-1 hover:underline">
                 {course.title}
               </h3>
-            </Link>
             <div className="mt-3 flex justify-end gap-4 text-sm">
-              <Link
-                href={`/admin/uploadVideo/${course.id}`}
+              <button
+                onClick={() => handleEditCourse(course.id)}
                 className="text-purple-600 hover:text-purple-800 dark:text-purple-400 dark:hover:text-purple-300"
               >
                 Edit
-              </Link>
+              </button>
               <button
                 onClick={() => handleDeleteCourse(course.id)}
                 className="text-red-600 hover:text-red-800 dark:text-red-400 dark:hover:text-red-300"
@@ -133,6 +146,15 @@ const CourseTable = () => {
           </div>
         ))}
       </div>
+
+      {showAddCourseModal && selectedCourse && (
+        <AddCourseModal
+          isOpen={showAddCourseModal}
+          setShowModal={setShowAddCourseModal}
+          mode="edit"
+          course={selectedCourse}
+        />
+      )}
     </div>
   );
 };

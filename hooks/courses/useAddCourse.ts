@@ -3,18 +3,26 @@
 import { useState } from "react";
 import { useCourseContext } from "@/context/course/CourseContext";
 
+export interface VideoPayload {
+  title: string;
+  url: string;
+}
+
+export interface AddCoursePayload {
+  title: string;
+  description: string;
+  price: string; // still string from input field
+  category: string;
+  durationDays?: number;
+  videos: VideoPayload[];
+}
+
 export function useAddCourse() {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const { addCourse } = useCourseContext();
 
-  const addCourseToBackend = async (data: {
-    title: string;
-    description: string;
-    price: string;
-    category: string;
-    videos: string[];
-  }) => {
+  const addCourseToBackend = async (data: AddCoursePayload) => {
     try {
       setLoading(true);
       setError(null);
@@ -29,6 +37,7 @@ export function useAddCourse() {
           description: data.description,
           price: Number(data.price),
           category: data.category,
+          durationDays: data.durationDays,
           videos: data.videos,
         }),
       });
@@ -39,7 +48,7 @@ export function useAddCourse() {
         throw new Error(json.message || "Failed to add course.");
       }
 
-      // ⬇️ Save in context
+      // Save to context
       addCourse(json.course);
       return json.course;
     } catch (err: any) {

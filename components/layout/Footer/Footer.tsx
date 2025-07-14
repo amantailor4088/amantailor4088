@@ -71,7 +71,7 @@ const Footer = () => {
                 href="mailto:support@amantailor.com"
                 className="hover:underline hover:text-purple-700 dark:hover:text-purple-400"
               >
-                support@amantailor.com
+                Amandeepppp8@gmail.com
               </a>
             </li>
             <li>
@@ -84,8 +84,8 @@ const Footer = () => {
               </a>
             </li>
             <li>
-              📍 PARTAP NAGAR 20/4D, Bathinda – 151001<br />
-              Near Railway Ground, Punjab
+              📍 Parasram nagar, street 29, property uid z611616 Bathinda, Punjab – 151001<br />
+              
             </li>
           </ul>
         </div>

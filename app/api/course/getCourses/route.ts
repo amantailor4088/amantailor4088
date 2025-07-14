@@ -17,6 +17,7 @@ export async function GET() {
       description: c.description,
       price: c.price,
       category: c.category,
+      expiryDate: c.expiryDate ? c.expiryDate.toISOString() : null,
       videos: c.videos, // now simply an array of strings
     })),
   });

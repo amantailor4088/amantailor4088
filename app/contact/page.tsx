@@ -29,18 +29,18 @@ const ContactPage = () => {
             <li>
               <strong className="text-purple-600 dark:text-purple-400">📧 Email:</strong>{" "}
               <Link href="mailto:support@amantailor.com" className="hover:underline">
-                support@amantailor.com
+                Amandeepppp8@gmail.com
               </Link>
             </li>
             <li>
               <strong className="text-purple-600 dark:text-purple-400">📞 Phone:</strong>{" "}
               <Link href="tel:+919041607156" className="hover:underline">
-                +91 90416 07156
+                +91 90416-07156
               </Link>
             </li>
             <li>
               <strong className="text-purple-600 dark:text-purple-400">📍 Location:</strong>{" "}
-              PARTAP NAGAR 20/4D, Bathinda, Punjab – 151001
+             Parasram nagar, street 29, property uid z611616 Bathinda, Punjab – 151001
             </li>
           </ul>
 

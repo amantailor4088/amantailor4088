@@ -1,12 +1,18 @@
 import { useState } from "react";
 
+export type Video = {
+  title: string;
+  url: string;
+};
+
 export type Course = {
   id: string;
   title: string;
   description: string;
   price: number;
   category?: string;
-  videos: string[];
+  expiryDate?: string | null;
+  videos: Video[];
 };
 
 export const useGetCourses = () => {
@@ -24,8 +30,19 @@ export const useGetCourses = () => {
         throw new Error("Failed to fetch courses");
       }
       const data = await response.json();
-      setCourses(data.data);
-      console.log("Fetched courses:", data.data);
+
+      const transformedCourses: Course[] = data.data.map((course: any) => ({
+        id: course.id ,
+        title: course.title,
+        description: course.description,
+        price: course.price,
+        category: course.category,
+        expiryDate: course.expiryDate || null,
+        videos: course.videos || [],
+      }));
+
+      setCourses(transformedCourses);
+      console.log("Fetched courses:", transformedCourses);
     } catch (err: any) {
       console.error("Error fetching courses:", err);
       setError(err.message || "Something went wrong");

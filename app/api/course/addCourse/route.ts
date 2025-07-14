@@ -7,7 +7,6 @@ export async function POST(req: NextRequest) {
   try {
     await connectDB();
 
-    // ✅ Verify admin access
     const user = await verifyTokenFromCookies();
 
     if (!user) {
@@ -27,7 +26,7 @@ export async function POST(req: NextRequest) {
     // ✅ Get JSON body
     const body = await req.json();
 
-    const { title, description, price, category, videos } = body;
+    const {title,description,price,category,durationDays,videos,} = body;
 
     if (!title || !description || !price || !category) {
       return NextResponse.json(
@@ -36,12 +35,25 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // ✅ Create the course
+    //  Validate videos if provided
+    if (videos && !Array.isArray(videos)) {
+      return NextResponse.json(
+        { success: false, message: "Invalid videos format." },
+        { status: 400 }
+      );
+    }
+
+    let expiryDate;
+    if (durationDays) {
+      expiryDate = new Date(Date.now() + durationDays * 24 * 60 * 60 * 1000);
+    }
+
     const courseDoc = await Course.create({
       title,
       description,
       price,
       category,
+      expiryDate,
       videos: videos || [],
     });
 
@@ -50,10 +62,11 @@ export async function POST(req: NextRequest) {
       message: "Course created successfully!",
       course: {
         id: courseDoc._id.toString(),
-        title,
-        description,
-        price,
-        category,
+        title: courseDoc.title,
+        description: courseDoc.description,
+        price: courseDoc.price,
+        category: courseDoc.category,
+        expiryDate: courseDoc.expiryDate,
         videos: courseDoc.videos,
       },
     });

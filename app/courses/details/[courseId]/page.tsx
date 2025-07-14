@@ -7,12 +7,11 @@ import {
   FaCheckCircle,
   FaPlayCircle,
   FaEye,
-  FaRupeeSign,
-  FaCertificate,
-  FaClock,
 } from "react-icons/fa";
 import PurchaseButton from "@/components/course/PurchaseButton";
 import { useState } from "react";
+import CourseDetailsCard from "@/components/course/CourseDetailCard";
+
 
 export default function CourseDetailPage() {
   const { courseId } = useParams() as { courseId: string };
@@ -23,11 +22,19 @@ export default function CourseDetailPage() {
   );
 
   const existingCourse = courses.find((c) => c.id === courseId);
-  function extractYouTubeId(url: string): string | null {
-  const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
-  return match ? match[1] : null;
-}
+  // Check course expiry
+  let isExpired = false;
 
+  if (existingCourse?.expiryDate) {
+    const expiryDate = new Date(existingCourse.expiryDate);
+    const today = new Date();
+    isExpired = today > expiryDate;
+  }
+
+  function extractYouTubeId(url: string): string | null {
+    const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
+    return match ? match[1] : null;
+  }
 
   if (loading) {
     return (
@@ -54,7 +61,20 @@ export default function CourseDetailPage() {
       </div>
     );
   }
-
+  if (isExpired) {
+    return (
+      <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
+        <div className="p-8 bg-white dark:bg-neutral-800 rounded-xl shadow-xl text-center">
+          <p className="text-red-600 text-2xl font-bold mb-3">
+            🚫 This course has expired.
+          </p>
+          <p className="text-gray-600 dark:text-gray-400 text-base">
+            Please contact support if you believe this is a mistake.
+          </p>
+        </div>
+      </div>
+    );
+  }
   const userHasPurchased = user?.coursesPurchased?.includes(existingCourse.id);
 
   return (
@@ -62,53 +82,11 @@ export default function CourseDetailPage() {
       <div className="max-w-5xl mx-auto grid grid-cols-1 lg:grid-cols-3 gap-10">
         {/* LEFT SIDE */}
         <div className="lg:col-span-2 space-y-7">
-          <section className="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-8 border border-gray-100 dark:border-neutral-700">
-            <h1 className="text-3xl md:text-4xl font-extrabold text-gray-900 dark:text-white mb-6 text-center">
-              {existingCourse.title}
-            </h1>
-
-            <p className="text-gray-700 dark:text-gray-300 text-base md:text-lg leading-relaxed mb-8 text-center">
-              {existingCourse.description ||
-                "No description available for this course."}
-            </p>
-
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-4 gap-6 text-gray-600 dark:text-gray-300 text-sm mb-8">
-              <div className="flex items-center justify-center">
-                <FaClock className="text-indigo-500 mr-2" />
-                <span>Self-paced learning</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <FaCertificate className="text-green-500 mr-2" />
-                <span>Certificate</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <FaEye className="text-blue-500 mr-2" />
-                <span>Lifetime Access</span>
-              </div>
-              <div className="flex items-center justify-center">
-                <FaPlayCircle className="text-red-500 mr-2" />
-                <span>HD Videos</span>
-              </div>
-            </div>
-
-            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 bg-gradient-to-r from-blue-50 dark:from-neutral-700 to-indigo-50 dark:to-neutral-700 p-6 rounded-lg shadow-inner border border-blue-100 dark:border-neutral-600">
-              <div className="flex items-center text-gray-900 dark:text-gray-100">
-                <FaRupeeSign className="text-2xl mr-2" />
-                <span className="text-3xl font-extrabold tracking-tight">
-                  {existingCourse.price}
-                </span>
-                <span className="text-sm font-medium text-gray-500 dark:text-gray-400 ml-2">
-                  INR
-                </span>
-              </div>
-              <span className="text-xs text-gray-500 dark:text-gray-400">
-                (incl. all taxes)
-              </span>
-              <span className="bg-indigo-500 text-white text-xs font-semibold px-3 py-1 rounded-full animate-pulse">
-                BEST VALUE
-              </span>
-            </div>
-          </section>
+          <CourseDetailsCard
+            title={existingCourse.title}
+            description={existingCourse.description}
+            price={existingCourse.price}
+          />
 
           <section className="bg-white dark:bg-neutral-800 rounded-2xl shadow-lg p-8">
             <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
@@ -117,8 +95,8 @@ export default function CourseDetailPage() {
 
             {existingCourse.videos?.length > 0 ? (
               <ul className="divide-y divide-gray-200 dark:divide-neutral-700">
-                {existingCourse.videos.map((videoUrl, index) => {
-                  const youtubeId = extractYouTubeId(videoUrl);
+                {existingCourse.videos.map((video, index) => {
+                  const youtubeId = extractYouTubeId(video.url);
                   const isExpanded = expandedVideoIndex === index;
 
                   return (
@@ -129,7 +107,7 @@ export default function CourseDetailPage() {
                             {index + 1}.
                           </span>
                           <span className="text-gray-800 dark:text-gray-100 font-medium text-base">
-                            Video {index + 1}
+                            {video.title || `Video ${index + 1}`}
                           </span>
                         </div>
 
@@ -138,10 +116,7 @@ export default function CourseDetailPage() {
                             <FaLock className="mr-1" /> Locked
                           </span>
                         ) : (
-                          <button
-                            onClick={() =>
-                              setExpandedVideoIndex(isExpanded ? null : index)
-                            }
+                          <button onClick={() =>setExpandedVideoIndex(isExpanded ? null : index)}
                             className={`${
                               isExpanded
                                 ? "bg-green-600 text-white"
@@ -158,7 +133,7 @@ export default function CourseDetailPage() {
                         <div className="mt-4 w-full aspect-video rounded-lg overflow-hidden shadow-lg">
                           <iframe
                             src={`https://www.youtube.com/embed/${youtubeId}`}
-                            title={`Video ${index + 1}`}
+                            title={video.title || `Video ${index + 1}`}
                             frameBorder="0"
                             allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
                             allowFullScreen
