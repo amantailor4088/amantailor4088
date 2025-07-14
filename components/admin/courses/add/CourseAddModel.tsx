@@ -145,12 +145,12 @@ export default function CourseModal({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex items-center justify-center overflow-auto">
+    <div className="fixed inset-0 z-50 bg-black/50 backdrop-blur-sm flex justify-center items-start sm:items-center overflow-auto p-4">
       <motion.div
         initial={{ opacity: 0, scale: 0.95 }}
         animate={{ opacity: 1, scale: 1 }}
         exit={{ opacity: 0, scale: 0.95 }}
-        className="bg-white dark:bg-neutral-900 rounded-2xl overflow-y-auto  mt-[25%] shadow-2xl w-full max-w-xl p-8 relative border border-gray-200 dark:border-neutral-700"
+        className="bg-white dark:bg-neutral-900 rounded-2xl overflow-y-auto max-h-screen shadow-2xl w-full max-w-xl p-8 relative border border-gray-200 dark:border-neutral-700"
       >
         <h2 className="text-3xl font-extrabold mb-6 text-gray-900 dark:text-white text-center">
           {mode === "edit" ? "Edit Course" : "Add New Course"}
@@ -320,7 +320,7 @@ export default function CourseModal({
           {/* Submit Button */}
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-md shadow-lg transition duration-200 ease-in-out"
+            className="w-full bg-gradient-to-r from-purple-600 to-indigo-600 hover:from-purple-700 hover:to-indigo-700 text-white font-bold py-3 rounded-md shadow-lg transition duration-200 ease-in-out mb-20"
             disabled={adding || updating}
           >
             {adding || updating
