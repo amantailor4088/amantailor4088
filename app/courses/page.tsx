@@ -59,25 +59,26 @@ export default function CoursesPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       {/* Stitching Courses Top Section */}
-      <section className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-pink-600 text-white p-8 md:p-12 rounded-xl shadow-2xl mb-12 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
-        <div className="absolute top-0 left-0 w-32 h-32 bg-white opacity-10 rounded-full mix-blend-overlay transform -translate-x-1/4 -translate-y-1/4"></div>
-        <div className="absolute bottom-0 right-0 w-48 h-48 bg-white opacity-10 rounded-full mix-blend-overlay transform translate-x-1/4 translate-y-1/4"></div>
+     <section className="relative overflow-hidden bg-gradient-to-r from-purple-500 to-pink-600 text-white p-8 md:p-12 rounded-xl shadow-2xl mb-12 flex flex-col md:flex-row justify-between items-center text-center md:text-left">
+  <div className="absolute top-0 left-0 w-32 h-32 bg-white opacity-10 rounded-full mix-blend-overlay transform -translate-x-1/4 -translate-y-1/4"></div>
+  <div className="absolute bottom-0 right-0 w-48 h-48 bg-white opacity-10 rounded-full mix-blend-overlay transform translate-x-1/4 translate-y-1/4"></div>
 
-        <div className="flex-1 mb-6 md:mb-0 md:mr-8 z-10">
-          <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-3">
-            Share Your Craft!
-          </h2>
-          <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto md:mx-0">
-            Are you a master of the needle and thread? Share your unique
-            stitching and sewing expertise by adding your own course!
-          </p>
-        </div>
-        <Link href="/courses/add" className="z-10">
-          <button className="bg-white text-purple-700 hover:bg-purple-100 px-8 py-4 rounded-full font-bold text-lg shadow-lg transition transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-purple-300">
-            + Add a Stitching Course
-          </button>
-        </Link>
-      </section>
+  <div className="flex-1 mb-6 md:mb-0 md:mr-8 z-10">
+    <h2 className="text-4xl md:text-5xl font-extrabold leading-tight mb-3">
+      Start Your Stitching Journey!
+    </h2>
+    <p className="text-lg md:text-xl opacity-90 max-w-2xl mx-auto md:mx-0">
+      Unlock expert-designed stitching courses tailored for every skill level.
+      Enroll now and bring your creative visions to life.
+    </p>
+  </div>
+  <Link href="/courses" className="z-10">
+    <button className="bg-white text-purple-700 hover:bg-purple-100 px-8 py-4 rounded-full font-bold text-lg shadow-lg transition transform hover:scale-105 active:scale-95 focus:outline-none focus:ring-4 focus:ring-purple-300">
+      Explore Courses
+    </button>
+  </Link>
+</section>
+
 
       {/* User’s Purchased Courses */}
       {user && user.coursesPurchased?.length > 0 && (
