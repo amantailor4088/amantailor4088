@@ -30,7 +30,7 @@ const PopularCourses = () => {
                   key={course.id}
                   className="group relative bg-white/90 dark:bg-neutral-900/80 backdrop-blur-md border border-gray-100 dark:border-neutral-700 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
                 >
-                  {course.title.includes("workshop") && (
+                  {course.title.includes("workshop") || course.title.includes("Workshop") && (
                     <Image
                       src="/workshop.jpg"
                       alt={course.title}
