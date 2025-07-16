@@ -5,6 +5,7 @@ type Course = {
     price: number;
     thumbnail: string;
     id: string;
+    
 };
 
 type CourseCardProps = {
