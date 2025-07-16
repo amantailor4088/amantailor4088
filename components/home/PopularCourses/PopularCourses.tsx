@@ -34,7 +34,7 @@ const PopularCourses = () => {
                     <Image
                       src="/workshop.jpg"
                       alt={course.title}
-                      className="h-48 w-full object-cover rounded-t-3xl"
+                      className="h-full w-full object-cover rounded-t-3xl"
                     />
                   )}
 
