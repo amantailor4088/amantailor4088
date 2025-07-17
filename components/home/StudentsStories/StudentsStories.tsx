@@ -12,10 +12,6 @@ const students = [
         quote: "The online course gave me confidence to start my own boutique. I now earn from what I love!"
     },
     {
-        image: "/reviews/2.jpg",
-        quote: "In just 3 months, I went from zero to tailoring professionally. And all in Punjabi!"
-    },
-    {
         image: "/reviews/3.jpg",
         quote: "Stitching is now my side hustle, all thanks to the easy video lessons and flexible timing."
     },
