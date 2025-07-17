@@ -7,27 +7,27 @@ import { useAuth } from "@/context/auth/AuthContext";
 import { useRouter } from "next/navigation";
 
 export default function AdminLayout({ children }: { children: ReactNode }) {
-  
- const { user } = useAuth();
- const router = useRouter();
+
+  const { user } = useAuth();
+  const router = useRouter();
 
 
- if(user?.role === "user") {
+  if (user?.role === "user") {
     return (
       router.push("/courses")
     )
-  }else{
+  } else {
     return (
       <div className="flex min-h-screen bg-gray-100 dark:bg-neutral-900 text-gray-800 dark:text-white">
-      <div className="hidden lg:block">
-        <AdminSidebar />
-      </div>
+        <div className="hidden lg:block">
+          <AdminSidebar />
+        </div>
 
-      <main className="flex-1 overflow-y-auto">
-        {children}
-        <AdminMobileSwitcher />
-      </main>
-    </div>
+        <main className="flex-1 overflow-y-auto">
+          {children}
+          <AdminMobileSwitcher />
+        </main>
+      </div>
     )
   }
 }
