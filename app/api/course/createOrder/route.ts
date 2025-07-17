@@ -26,7 +26,7 @@ export async function POST(request: NextRequest) {
 
         if (!course) return NextResponse.json({ message: "Course Not Found" }, { status: 404 })
 
-        const amount = course.discountPrice*100
+        const amount = (course.price - course.discountPrice) * 100
 
         if (!amount) {
             return NextResponse.json({ message: `Amount is required` }, { status: 400 })
