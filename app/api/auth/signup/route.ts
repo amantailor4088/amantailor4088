@@ -4,8 +4,8 @@ import crypto from "crypto";
 import validator from "validator";
 import User from "@/models/user.model";
 import { connectDB } from "@/lib/db";
-import { sendMail } from "@/lib/mail"; // nodemailer utility
-import { rateLimit } from "@/lib/ratelimit"; // basic in-memory rate limiter
+import { sendMail } from "@/lib/mail"; 
+import { rateLimit } from "@/lib/ratelimit"; 
 
 export async function POST(req: NextRequest) {
   try {
@@ -23,6 +23,7 @@ export async function POST(req: NextRequest) {
     const rawName = typeof data.name === "string" ? data.name.trim() : "";
     const rawEmail = typeof data.email === "string" ? data.email.trim() : "";
     const rawPassword = typeof data.password === "string" ? data.password : "";
+    const rawPhone = typeof data.phone === "string" ? data.phone.trim() : "";
 
     const errors: { field: string; message: string }[] = [];
 
@@ -38,20 +39,33 @@ export async function POST(req: NextRequest) {
       errors.push({ field: "password", message: "Password must be at least 6 characters." });
     }
 
+   if (rawPhone && !validator.isMobilePhone(rawPhone)) {
+      errors.push({ field: "phone", message: "Invalid phone number format." });
+    }
+
     if (errors.length > 0) {
       return NextResponse.json({ success: false, errors }, { status: 422 });
     }
 
     const sanitizedEmail = validator.normalizeEmail(rawEmail);
     const sanitizedName = validator.escape(rawName);
+    const sanitizedPhone = rawPhone;
 
     if (!sanitizedEmail) {
       return NextResponse.json({ success: false, message: "Failed to normalize email." }, { status: 400 });
     }
 
-    const existingUser = await User.findOne({ email: sanitizedEmail });
+    const existingUser = await User.findOne({
+        $or: [{ email: sanitizedEmail }, { phone: sanitizedPhone }]
+    });
+
     if (existingUser) {
-      return NextResponse.json({ success: false, message: "Email already registered." }, { status: 409 });
+        if (existingUser.email === sanitizedEmail) {
+            return NextResponse.json({ success: false, message: "Email already registered." }, { status: 409 });
+        }
+        if (sanitizedPhone && existingUser.phone === sanitizedPhone) {
+            return NextResponse.json({ success: false, message: "Phone number already registered." }, { status: 409 });
+        }
     }
 
     const hashedPassword = await bcrypt.hash(rawPassword, 12);
@@ -63,6 +77,7 @@ export async function POST(req: NextRequest) {
     await User.create({
       name: sanitizedName,
       email: sanitizedEmail,
+      phone: sanitizedPhone,
       password: hashedPassword,
       role: "user",
       isVerified: false,

@@ -14,6 +14,7 @@ function SignupForm({ setShowLogin }: props) {
         email: "",
         password: "",
         confirmPassword: "",
+        phone: ""
     });
     const [showPassword, setShowPassword] = useState(false);
     const [showConfirmPassword, setShowConfirmPassword] = useState(false);
@@ -31,12 +32,7 @@ function SignupForm({ setShowLogin }: props) {
             return;
         }
 
-        await signup({
-            name: data.name,
-            email: data.email,
-            password: data.password,
-        });
-
+        await signup(data);
     };
 
     return (
@@ -60,6 +56,14 @@ function SignupForm({ setShowLogin }: props) {
                     value={data.email}
                     onChange={(e) => setData((prev) => ({ ...prev, email: e.target.value }))}
                     required
+                />
+
+                <input
+                    type="tel"
+                    placeholder="Phone number (e.g., +91-XXXXXXXXXX)"
+                    className={inputClass}
+                    value={data.phone}
+                    onChange={(e) => setData((prev) => ({ ...prev, phone: e.target.value }))}
                 />
 
                 {/* Password */}

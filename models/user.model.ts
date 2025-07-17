@@ -3,6 +3,7 @@ import mongoose, { Schema, Document, Types } from "mongoose";
 export interface UserDocument extends Document {
   name: string;
   email: string;
+  phone: string;
   password: string;
   role: "admin" | "user";
   isVerified: boolean;
@@ -28,6 +29,13 @@ const UserSchema = new Schema<UserDocument>(
       required: true,
       unique: true,
       lowercase: true,
+      trim: true,
+    },
+
+    phone: {
+      type: String,
+      unique: true,
+      sparse: true,
       trim: true,
     },
 

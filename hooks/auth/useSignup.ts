@@ -4,6 +4,7 @@ interface SignupPayload {
   name: string;
   email: string;
   password: string;
+  phone: string
 }
 
 interface UseSignupReturn {
@@ -18,7 +19,7 @@ export function useSignup(): UseSignupReturn {
   const [error, setError] = useState<string | null>(null);
   const [success, setSuccess] = useState(false);
 
-  const signup = async ({ name, email, password }: SignupPayload) => {
+  const signup = async (inputs: SignupPayload) => {
     setLoading(true);
     setError(null);
     setSuccess(false);
@@ -27,7 +28,7 @@ export function useSignup(): UseSignupReturn {
       const res = await fetch("/api/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ name, email, password }),
+        body: JSON.stringify(inputs),
       });
 
       const data = await res.json();
