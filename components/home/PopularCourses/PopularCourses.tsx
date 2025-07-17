@@ -23,59 +23,55 @@ const PopularCourses = () => {
             </p>
           )}
 
-          {courses?.map((course, idx) => (
-            <div key={idx}>
+          {courses?.map((course) => (
+            <div>
               {course.isRecommended && (
-                <article
-                  key={course.id}
-                  className="group relative bg-white/90 dark:bg-neutral-900/80 backdrop-blur-md border border-gray-100 dark:border-neutral-700 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col h-[480px]" // Assuming h-[480px] is chosen to fit content
-                >
-                  <div className="relative w-full h-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
-                    {(course.title.includes("workshop") || course.title.includes("Workshop")) ? (
-                      <Image
-                        src="/workshop.jpg"
-                        alt={course.title}
-                        fill
-                        className="object-contain" // Changed from object-cover to object-contain
-                      />
-                    ) : (
-                      <span className="text-gray-400 dark:text-gray-600 text-sm">
-                        No Image Available
-                      </span>
-                    )}
-                  </div>
+               <article
+  key={course.id}
+  className="group relative bg-white/90 dark:bg-neutral-900/80 backdrop-blur-md border border-gray-100 dark:border-neutral-700 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
+>
+  {(course.title.toLowerCase().includes("workshop")) && (
+    <div className="h-48 w-full">
+      <Image
+        src="/workshop.jpg"
+        alt={course.title}
+        className="h-full w-full object-cover rounded-t-3xl"
+      />
+    </div>
+  )}
 
-                  <div className="p-6 flex flex-col flex-grow">
-                    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
-                      {course.title}
-                    </h3>
+  <div className="p-6 flex flex-col flex-grow">
+    <h3 className="text-xl font-semibold text-gray-900 dark:text-white mb-2">
+      {course.title}
+    </h3>
 
-                    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3 flex-grow overflow-hidden min-h-0">
-                      {course.description}
-                    </p>
+    <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 line-clamp-3">
+      {course.description}
+    </p>
 
-                    <div className="mt-auto">
-                      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
-                        <span>💰 ₹{course.price}</span>
-                        {course.discountPrice > 0 && (
-                          <span className="text-green-600 dark:text-green-400">
-                            Sale: ₹{course.discountPrice}
-                          </span>
-                        )}
-                        <span>
-                          {course.isRecommended ? "⭐ Recommended" : ""}
-                        </span>
-                      </div>
+    <div className="mt-auto">
+      <div className="flex items-center justify-between text-xs text-gray-500 dark:text-gray-400 mb-4">
+        <span>💰 ₹{course.price}</span>
+        {course.discountPrice > 0 && (
+          <span className="text-green-600 dark:text-green-400">
+            Sale: ₹{course.discountPrice}
+          </span>
+        )}
+        <span>
+          {course.isRecommended ? "⭐ Recommended" : ""}
+        </span>
+      </div>
 
-                      <Link
-                        href={`/courses/details/${course.id}`}
-                        className="inline-block w-full text-center bg-purple-700 hover:bg-purple-800 text-white font-medium px-5 py-2.5 rounded-full transition"
-                      >
-                        Enroll Now
-                      </Link>
-                    </div>
-                  </div>
-                </article>
+      <Link
+        href={`/courses/details/${course.id}`}
+        className="inline-block w-full text-center bg-purple-700 hover:bg-purple-800 text-white font-medium px-5 py-2.5 rounded-full transition"
+      >
+        Enroll Now
+      </Link>
+    </div>
+  </div>
+</article>
+
               )}
             </div>
           ))}
