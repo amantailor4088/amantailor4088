@@ -1,7 +1,6 @@
 "use client";
 
 import { useState } from "react";
-import Link from "next/link";
 import { useCourseContext } from "@/context/course/CourseContext";
 import { useDeleteCourse } from "@/hooks/courses/useDeleteCourse";
 import AddCourseModal, { ExistingCourseType } from "./add/CourseAddModel";
@@ -75,12 +74,11 @@ const CourseTable = () => {
                   {index + 1}
                 </td>
                 <td className="px-6 py-4 text-gray-800 dark:text-white">
-                  <Link
-                    href={`/admin/uploadVideo/${course.id}`}
+                  <div
                     className="hover:underline"
                   >
                     {course.title}
-                  </Link>
+                  </div>
                 </td>
                 <td className="px-6 py-4 text-gray-800 dark:text-white">
                   ₹{course.price}

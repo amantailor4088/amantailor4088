@@ -12,7 +12,7 @@ export interface CourseDetailsCardProps {
   title: string;
   description?: string;
   price: number;
-  discountPrice: number; // discount amount, NOT final price
+  discountPrice: number;
 }
 
 export default function CourseDetailsCard({

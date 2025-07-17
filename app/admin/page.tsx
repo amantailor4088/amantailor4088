@@ -1,10 +1,9 @@
 "use client";
 
-import { use, useState } from "react";
+import { useState } from "react";
 import { motion } from "framer-motion";
 import CourseTable from "@/components/admin/courses/CourseTable";
 import AddCourseModal from "@/components/admin/courses/add/CourseAddModel";
-import { useCourseContext } from "@/context/course/CourseContext";
 import { useAuth } from "@/context/auth/AuthContext";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";

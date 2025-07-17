@@ -57,7 +57,7 @@ const CallToAction = () => {
           {/* Main Image */}
           <div className="relative z-10 h-full w-full rounded-xl overflow-hidden shadow-xl ring-1 ring-white/10 ring-offset-2 ring-offset-purple-800">
             <Image
-              src="/home/download.png"
+              src="/home/CTA.jpg"
               alt="Tailoring Illustration"
               fill
               className="object-cover object-center"
