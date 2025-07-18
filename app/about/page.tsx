@@ -147,7 +147,7 @@ const App = () => {
                 <Image
                   width={600}
                   height={450}
-                  src="/ownerImages/img9.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., a hand stitching, a design in progress)
+                  src="/ownerimages/img9.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., a hand stitching, a design in progress)
                   alt="Close-up of intricate hand stitching on fabric"
                   className="w-full h-full object-cover"
                   priority
@@ -162,7 +162,7 @@ const App = () => {
                 <Image
                   width={250}
                   height={180}
-                  src="/ownerImages/img8.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., fabric close-up, tools)
+                  src="/ownerimages/img8.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., fabric close-up, tools)
                   alt="Detail shot of tailoring tools and threads"
                   className="w-full h-full object-cover"
                 />
@@ -176,7 +176,7 @@ const App = () => {
                 <Image
                   width={250}
                   height={180}
-                  src="/ownerImages/img10.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., sketch, pattern cutting)
+                  src="/ownerimages/img10.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., sketch, pattern cutting)
                   alt="A tailor's hand drafting a pattern on cloth"
                   className="w-full h-full object-cover"
                 />
@@ -365,7 +365,7 @@ const App = () => {
                 <Image
                   width={600}
                   height={450}
-                  src="/ownerImages/img7.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., student focused on work)
+                  src="/ownerimages/img7.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., student focused on work)
                   alt="Student deeply engaged in learning tailoring"
                   className="w-full h-full object-cover"
                   priority
@@ -380,7 +380,7 @@ const App = () => {
                 <Image
                   width={250}
                   height={180}
-                  src="/ownerImages/img4.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., group discussion)
+                  src="/ownerimages/img4.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., group discussion)
                   alt="Students collaborating on a project"
                   className="w-full h-full object-cover"
                 />
@@ -394,7 +394,7 @@ const App = () => {
                 <Image
                   width={250}
                   height={180}
-                  src="/ownerImages/img11.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., finished student work)
+                  src="/ownerimages/img11.jpg" // <--- REPLACE WITH YOUR IMAGE PATH (e.g., finished student work)
                   alt="A student proudly showing their finished tailoring project"
                   className="w-full h-full object-cover"
                 />
