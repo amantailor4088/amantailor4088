@@ -9,31 +9,31 @@ import "swiper/css/pagination";
 const students = [
     {
         image: "/reviews/1.jpg",
-        quote: "The online course gave me confidence to start my own boutique. I now earn from what I love!"
+        quote: "Didu you are the best teacher in the world 🥰🥰🥰 vaise bhi kise  di tarkki deke ka Koi nahi jarda hunda hun 1 day rahgye ta hun khdi a na smhj ni lagi frist day vi dass sakhdi aa se vaise bhi jinna Ne kuchh karna nahi hunde ooo bol hi sakhdi a naa maa khde kuj ni pushye kyo ki class ch sare clear ho jande see ehne skhoke koi vi ni smhjode jine tusi samjhaya you are the best 🥰🥰🥰🥰🥰🥰🥰🥰🥰🥰 loke da kmm hi aa bolne"
     },
     {
         image: "/reviews/3.jpg",
-        quote: "Stitching is now my side hustle, all thanks to the easy video lessons and flexible timing."
+        quote: "Good morning mam. Tusi bhut vadiya trike nl smjaude o.ohde lyi thank you. But loka da km hunda faltu bolna   tusi tension na lao asi sode nl aa❤❤"
     },
     {
         image: "/reviews/4.jpg",
-        quote: "I never thought I could stitch, but this course made it so simple and enjoyable!"
+        quote: "Mam mai koi class miss ni kiti.class de end tk sare doubt clear ho jnde ne.har ek doubt ene vadia trike nl clear krde o tusi thnx ji🙏"
     },
     {
         image: "/reviews/6.jpg",
-        quote: "The instructors are so patient and the content is incredibly clear. My skills have truly transformed."
+        quote: "Thanku so much mam ❤ ehna vdia sikhon leyi"
     },
     {
         image: "/reviews/7.jpg",
-        quote: "This online course fit perfectly into my busy schedule, allowing me to pursue my passion for fashion."
+        quote: "Hlo. Ssa dee Dee tusi bht vdia smjane a har ek cheez bht easy way nal sanu sab smjh aundi nd aj tak ma ik var v kj ni puchya ky k doubt koi rehnda e ni vdo dekh k mera km vse set c internet cafe a mera apna but ma tuhade to inspire ho k stitching v sikhi hn ma apni shop te nl e stitching v krdi a ma ik do var status update kita mere nl stitching da v bht customer jud gye km dono bht vdia chl rhe a thank u soooo much aina vdia sikhan ly manu ta tuhanu dekh hr km krn di hope mildi a love u Dee 😘😘😘😘😘😘"
     },
     {
         image: "/reviews/8.jpg",
-        quote: "From basic stitches to complex designs, every lesson was a step towards becoming a confident tailor."
+        quote: "Eh m first tym workshop to Sikh k bnayi ae mam"
     },
     {
         image: "/reviews/5.jpg",
-        quote: "United by our success, we're proud to be part of this incredible journey, showing that anyone can achieve their dreams here!"
+        quote: "Thank you so much dii ❤🤗"
     },
 ];
 

@@ -13,7 +13,7 @@ const App = () => {
           className="absolute inset-0 bg-cover bg-center opacity-50"
           style={{
             backgroundImage:
-              "url('https://wallpaperaccess.com/full/2594849.jpg')",
+              "url('/about/hero.jpg')",
           }}
         />
 
