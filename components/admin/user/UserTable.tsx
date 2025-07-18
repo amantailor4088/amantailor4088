@@ -1,57 +1,10 @@
-export interface User {
-  id: number;
-  name: string;
-  email: string;
-  phone: string;
-  courses: string[];
-}
 
-export const users = [
-  {
-    id: 1,
-    name: "Alice Johnson",
-    email: "alice.j@example.com",
-    phone: "123-456-7890",
-    courses: ["Introduction to React", "Advanced JavaScript", "UI/UX Fundamentals"],
-  },
-  {
-    id: 2,
-    name: "Bob Williams",
-    email: "bob.w@example.com",
-    phone: "987-654-3210",
-    courses: ["Data Structures & Algorithms", "Python for Beginners", "Cloud Computing Basics"],
-  },
-  {
-    id: 3,
-    name: "Charlie Brown",
-    email: "charlie.b@example.com",
-    phone: "555-123-4567",
-    courses: ["Full-Stack Web Development", "Database Management"],
-  },
-  {
-    id: 4,
-    name: "Diana Prince",
-    email: "diana.p@example.com",
-    phone: "111-222-3333",
-    courses: ["Machine Learning with Python", "Deep Learning Fundamentals", "Cybersecurity Basics"],
-  },
-  {
-    id: 5,
-    name: "Eve Green",
-    email: "eve.g@example.com",
-    phone: "444-555-6666",
-    courses: ["Graphic Design Principles", "Digital Marketing Strategy"],
-  },
-  {
-    id: 6,
-    name: "Frank White",
-    email: "frank.w@example.com",
-    phone: "777-888-9999",
-    courses: ["Business Analytics", "Project Management Essentials"],
-  },
-];
+import useGetUsers from "@/hooks/user/useGetUsers";
+
 
 const UserTable = () => {
+
+  const {users,loading,error} = useGetUsers();
 
   return (
     <div className="w-full">
@@ -76,9 +29,9 @@ const UserTable = () => {
           </thead>
 
           <tbody className="divide-y divide-gray-200 dark:divide-neutral-800">
-            {users.map((user) => (
+            {users.map((user,idx) => (
               <tr
-                key={user.id}
+                key={idx}
                 className="hover:bg-gray-50 dark:hover:bg-neutral-800"
               >
                 <td className="px-6 py-4 text-gray-800 dark:text-white">
@@ -123,9 +76,9 @@ const UserTable = () => {
 
       {/* Mobile Cards */}
       <div className="space-y-5 md:hidden">
-        {users.map((user) => (
+        {users.map((user,idx) => (
           <div
-            key={user.id}
+            key={idx}
             className="bg-white dark:bg-neutral-800 p-5 rounded-xl border border-gray-200 dark:border-neutral-700 shadow-md hover:shadow-lg transition-all duration-300 ease-in-out" // Enhanced shadow for depth, smooth transition
           >
             <div className="flex items-start gap-4 mb-4"> 
