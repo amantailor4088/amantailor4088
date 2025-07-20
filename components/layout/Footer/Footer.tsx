@@ -43,8 +43,8 @@ const Footer = () => {
               ["Home", "/"],
               ["About Us", "/about"],
               ["Courses", "/courses"],
-              ["Reviews", "/reviews"],
-              ["Terms & Conditions", "/terms"],
+              ["Privacy", "/privacyPolicy"],
+              ["Terms & Conditions", "/termCondition"],
               ["Contact", "/contact"],
             ].map(([label, href]) => (
               <li key={label}>
