@@ -57,7 +57,7 @@ const PopularCourses = () => {
                         <span>💰 ₹{course.price}</span>
                         {course.discountPrice > 0 && (
                           <span className="text-green-600 dark:text-green-400">
-                            Sale: ₹{course.discountPrice}
+                            Sale: ₹{course.price - course.discountPrice}
                           </span>
                         )}
                         <span>
