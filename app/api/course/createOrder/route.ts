@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Razorpay from "razorpay";
 import Course from "@/models/course.model";
+import { verifyTokenFromCookies } from "@/lib/jwt";
 
 const key_id = process.env.RAZORPAY_KEY_ID as string;
 const key_secret = process.env.RAZORPAY_KEY_SECRET as string;
@@ -21,6 +22,14 @@ export type OrderBody = {
 export async function POST(request: NextRequest) {
     try {
 
+        const user = await verifyTokenFromCookies()
+
+        if(!user){
+            NextResponse.json({
+                success:false,
+                message : "User Not Found : Please Login again" 
+            })
+        }
         const { courseId }: OrderBody = await request.json();
         const course = await Course.findById(courseId)
 
