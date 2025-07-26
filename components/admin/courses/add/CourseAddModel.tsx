@@ -244,11 +244,10 @@ export default function CourseModal({
               className="w-full border border-gray-300 dark:border-neutral-600 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-purple-500 dark:bg-neutral-800 dark:text-white"
               required
             >
-              
               <option value="">Select Category</option>
-              <option value="">Basic To Advance Course</option>
-              <option value="Advanced Stitching">Advanced Stitching Course</option>
-              <option value="Advanced Stitching">Worksops</option>
+              <option value="Basic To Advance Course">Basic To Advance Course</option>
+              <option value="Advanced Stitching Course">Advanced Stitching Course</option>
+              <option value="Worksops">Worksops</option>
             </select>
           </div>
 
