@@ -1,5 +1,3 @@
-// /app/api/course/addPurchasedCourse/route.ts
-
 import { NextRequest, NextResponse } from "next/server";
 import mongoose, { ObjectId } from "mongoose";
 import User from "@/models/user.model";

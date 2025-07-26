@@ -1,5 +1,3 @@
-// utils/createOrderId.ts
-
 export async function createOrderId(courseId: string): Promise<string> {
     try {
         const response = await fetch("/api/course/createOrder", {
