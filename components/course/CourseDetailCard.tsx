@@ -48,10 +48,6 @@ export default function CourseDetailsCard({
           <span>Certificate</span>
         </div>
         <div className="flex items-center justify-center">
-          <FaEye className="text-blue-500 mr-2" />
-          <span>Lifetime Access</span>
-        </div>
-        <div className="flex items-center justify-center">
           <FaPlayCircle className="text-red-500 mr-2" />
           <span>HD Videos</span>
         </div>
