@@ -244,7 +244,7 @@ export default function CoursesPage() {
 
                 <div className="flex justify-between items-center mt-auto">
                   <span className="text-sm text-gray-500 dark:text-gray-400">
-                    Lifetime Access
+                    Start Anytime
                   </span>
                   <button className="bg-green-600 hover:bg-green-700 text-white font-semibold py-2 px-4 rounded-lg transition-all duration-300">
                     View Details
