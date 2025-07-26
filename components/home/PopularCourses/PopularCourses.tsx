@@ -31,10 +31,45 @@ const PopularCourses = () => {
                   key={course.id}
                   className="group relative bg-white/90 dark:bg-neutral-900/80 backdrop-blur-md border border-gray-100 dark:border-neutral-700 rounded-3xl shadow-md hover:shadow-2xl transition-all duration-300 overflow-hidden flex flex-col"
                 >
-                  {(course.title.toLowerCase().includes("workshop")) && (
+                  {(course.title.includes("KALIYON WALE FROCK – WORKSHOP")) && (
                     <div className="w-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
                       <Image
                         src="/workshop.jpg"
+                        alt={course.title}
+                        className="w-full h-auto object-contain" 
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  )}
+                  {(course.title.includes("GHAGRA WORKSHOP")) && (
+                    <div className="w-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
+                      <Image
+                        src="/ghangraworkshop.jpg"
+                        alt={course.title}
+                        className="w-full h-auto object-contain" 
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  )}
+
+                  {(course.title.includes("KAPDHE TOH NAP LANA – WORKSHOP")) && (
+                    <div className="w-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
+                      <Image
+                        src="/workshop1.jpg"
+                        alt={course.title}
+                        className="w-full h-auto object-contain" 
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  )}
+
+                  {(course.title.includes("FARSI SALWAR")) && (
+                    <div className="w-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
+                      <Image
+                        src="/farshisalvarworkshop.jpg"
                         alt={course.title}
                         className="w-full h-auto object-contain" 
                         width={600}
