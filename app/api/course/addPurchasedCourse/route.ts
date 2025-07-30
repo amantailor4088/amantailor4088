@@ -10,7 +10,6 @@ export async function POST(request: NextRequest) {
 
     const { userId, courseId } = await request.json();
 
-    console.log("Received data:", { userId, courseId });
     
     if (!userId || !courseId) {
       return NextResponse.json(
