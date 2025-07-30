@@ -18,12 +18,7 @@ export async function verifyTransporter() {
   }
 }
 
-export async function sendMail({
-  to,
-  subject,
-  html,
-  text,
-}: {
+export async function sendMail({to,subject,html,text,}: {
   to: string;
   subject: string;
   html: string;
