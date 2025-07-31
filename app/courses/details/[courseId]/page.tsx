@@ -12,7 +12,6 @@ import PurchaseButton from "@/components/course/PurchaseButton";
 import { useState } from "react";
 import CourseDetailsCard from "@/components/course/CourseDetailCard";
 
-
 export default function CourseDetailPage() {
   const { courseId } = useParams() as { courseId: string };
   const { courses, loading } = useCourseContext();
@@ -22,17 +21,28 @@ export default function CourseDetailPage() {
   );
 
   const existingCourse = courses.find((c) => c.id === courseId);
+
   // Check course expiry
   let isExpired = false;
+  let expiryDateFormatted: string | null = null;
 
   if (existingCourse?.expiryDate) {
     const expiryDate = new Date(existingCourse.expiryDate);
     const today = new Date();
     isExpired = today > expiryDate;
+
+    expiryDateFormatted = expiryDate.toLocaleDateString("en-IN", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+    });
   }
 
+  // YouTube ID extractor (supports all common formats)
   function extractYouTubeId(url: string): string | null {
-    const match = url.match(/(?:v=|\/)([a-zA-Z0-9_-]{11})/);
+    const regex =
+      /(?:youtube\.com\/(?:watch\?v=|embed\/)|youtu\.be\/)([a-zA-Z0-9_-]{11})/;
+    const match = url.match(regex);
     return match ? match[1] : null;
   }
 
@@ -61,6 +71,7 @@ export default function CourseDetailPage() {
       </div>
     );
   }
+
   if (isExpired) {
     return (
       <div className="flex items-center justify-center min-h-screen bg-gray-100 dark:bg-gray-900">
@@ -75,6 +86,7 @@ export default function CourseDetailPage() {
       </div>
     );
   }
+
   const userHasPurchased = user?.coursesPurchased?.includes(existingCourse.id);
 
   return (
@@ -117,7 +129,10 @@ export default function CourseDetailPage() {
                             <FaLock className="mr-1" /> Locked
                           </span>
                         ) : (
-                          <button onClick={() =>setExpandedVideoIndex(isExpanded ? null : index)}
+                          <button
+                            onClick={() =>
+                              setExpandedVideoIndex(isExpanded ? null : index)
+                            }
                             className={`${
                               isExpanded
                                 ? "bg-green-600 text-white"
@@ -171,6 +186,17 @@ export default function CourseDetailPage() {
                 >
                   <FaPlayCircle className="mr-2 text-base" /> Start Watching
                 </button>
+
+                {/* ✅ Expiry Date Shown */}
+                {expiryDateFormatted && (
+                  <div className="flex items-center justify-center text-sm text-gray-600 dark:text-gray-400 mt-3">
+                    <FaPlayCircle className="mr-2 text-base" />
+                    Expiry Date:
+                    <span className="ml-1 font-semibold">
+                      {expiryDateFormatted}
+                    </span>
+                  </div>
+                )}
               </div>
             ) : (
               <>
@@ -182,7 +208,7 @@ export default function CourseDetailPage() {
                 </p>
                 <PurchaseButton
                   price={existingCourse.price}
-                  discount = {existingCourse.discountPrice}
+                  discount={existingCourse.discountPrice}
                   courseId={existingCourse.id}
                 />
               </>
