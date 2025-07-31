@@ -15,12 +15,15 @@ import CourseDetailsCard from "@/components/course/CourseDetailCard";
 export default function CourseDetailPage() {
   const { courseId } = useParams() as { courseId: string };
   const { courses, loading } = useCourseContext();
+
   const { user } = useAuth();
   const [expandedVideoIndex, setExpandedVideoIndex] = useState<number | null>(
     null
   );
 
   const existingCourse = courses.find((c) => c.id === courseId);
+
+   console.log("Existing Course:", existingCourse);
 
   // Check course expiry
   let isExpired = false;
@@ -178,15 +181,11 @@ export default function CourseDetailPage() {
                 <p className="text-green-700 dark:text-green-400 text-xl font-bold">
                   You own this course!
                 </p>
-                <button
-                  className="w-full bg-gradient-to-r from-indigo-600 to-purple-700 hover:from-indigo-700 hover:to-purple-800 text-white font-bold py-3 rounded-lg shadow-md flex items-center justify-center text-lg"
-                  onClick={() =>
-                    window.scrollTo({ top: 0, behavior: "smooth" })
-                  }
-                >
-                  <FaPlayCircle className="mr-2 text-base" /> Start Watching
-                </button>
-
+                
+                <p className="text-gray-600 dark:text-gray-300 text-base">
+                  Enjoy access to all course materials, including
+                  videos, exercises, and resources.
+                </p>
                 {/* ✅ Expiry Date Shown */}
                 {expiryDateFormatted && (
                   <div className="flex items-center justify-center text-sm text-gray-600 dark:text-gray-400 mt-3">
