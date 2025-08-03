@@ -3,7 +3,6 @@
 import React, { useState } from "react";
 import Script from "next/script";
 import { createOrderId } from "@/utils/createOrderId";
-import { useAddPurchasedCourse } from "@/hooks/courses/useAddPurchasedCourse";
 import { useAuth } from "@/context/auth/AuthContext";
 import AuthModal from "../login/Auth";
 
@@ -19,7 +18,6 @@ export default function PurchaseButton({
   courseId,
 }: PurchaseButtonProps) {
   const [isLoading, setIsLoading] = useState(false);
-  const { addPurchasedCourse } = useAddPurchasedCourse();
   const { user } = useAuth();
   const [showLoginModal, setShowLoginModal] = useState(false);
 
@@ -43,42 +41,9 @@ export default function PurchaseButton({
         description: `Purchase of Course: ${courseId}`,
         order_id: orderId,
 
-        handler: async function (response: any) {
-          try {
-            const verifyResponse = await fetch("/api/course/verifyOrder", {
-              method: "POST",
-              headers: {
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                razorpay_order_id: orderId,
-                razorpay_payment_id: response.razorpay_payment_id,
-                razorpay_signature: response.razorpay_signature,
-              }),
-            });
-
-            if (!verifyResponse.ok) {
-              const errorData = await verifyResponse
-                .json()
-                .catch(() => ({ message: "Verification failed on server." }));
-              throw new Error(
-                errorData.message ||
-                  `Server verification error: ${verifyResponse.statusText}`
-              );
-            }
-
-            const verificationData = await verifyResponse.json();
-            alert("Payment successful! Thank you for your purchase.");
-            await addPurchasedCourse(courseId);
-          } catch (error: any) {
-            alert("Payment verification failed. Please contact support.");
-            console.error("Payment verification error:", error);
-          }
-        },
-
         prefill: {
-          name: "John Doe",
-          email: "john.doe@example.com",
+          name: user.name || "Unknown",
+          email: user.email || "john.doe@example.com",
         },
         theme: {
           color: "#3399cc",
