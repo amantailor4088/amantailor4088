@@ -81,7 +81,7 @@ export default function RootLayout({
           <CourseProvider>
             <Navbar />
             {children}
-            <Footer />
+            <Footer />  
           </CourseProvider>
         </AuthProvider>
       </body>

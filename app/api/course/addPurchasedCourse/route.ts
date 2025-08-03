@@ -52,7 +52,6 @@ export async function POST(request: NextRequest) {
 
     const user = await User.findOne({ email });
     if (!user) {
-      console.log("User not found for email:", email);
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
@@ -60,7 +59,6 @@ export async function POST(request: NextRequest) {
       (c: mongoose.Types.ObjectId) => c.toString() === course._id.toString()
     );
     if (alreadyPurchased) {
-      console.log("Course already purchased by user:", user.email);
       
       return NextResponse.json({ message: "Course already purchased" }, { status: 200 });
     }
