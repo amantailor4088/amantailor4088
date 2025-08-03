@@ -38,7 +38,7 @@ export default function PurchaseButton({
         amount: netPrice * 100,
         currency: "INR",
         name: "Aman Tailors",
-        description: `Purchase of Course: ${courseId}`,
+        description: `${courseId}`,
         order_id: orderId,
 
         prefill: {

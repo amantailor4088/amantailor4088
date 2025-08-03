@@ -11,46 +11,48 @@ const RAZORPAY_WEBHOOK_SECRET = process.env.RAZORPAY_WEBHOOK_SECRET!;
 export async function POST(request: NextRequest) {
   try {
     await connectDB();
-
+    
     const rawBody = await request.text();
-    const razorpaySignature = request.headers.get("x-razorpay-signature");
-
+    const razorpaySignature = request.headers.get("x-razorpay-signature") || "not found";
+    
     const expectedSignature = crypto
-      .createHmac("sha256", RAZORPAY_WEBHOOK_SECRET)
-      .update(rawBody)
-      .digest("hex");
-
+    .createHmac("sha256", RAZORPAY_WEBHOOK_SECRET)
+    .update(rawBody)
+    .digest("hex");
+    
     if (expectedSignature !== razorpaySignature) {
       return NextResponse.json(
         { message: "Invalid signature. Unauthorized request." },
         { status: 401 }
       );
     }
-
+    
     const webhookData = JSON.parse(rawBody);
     const eventType = webhookData?.event;
     if (eventType !== "payment.captured") {
       return NextResponse.json({ message: "Event not handled" }, { status: 400 });
     }
-
+    
     const paymentEntity = webhookData?.payload?.payment?.entity;
     if (!paymentEntity || paymentEntity.status !== "captured") {
       return NextResponse.json({ message: "Payment not captured" }, { status: 400 });
     }
-
-    const { email, order_id: orderId } = paymentEntity;
-
-    if (!email || !orderId) {
+    
+    const { email, description: courseId } = paymentEntity;
+    
+    
+    if (!email || !courseId) {
       return NextResponse.json({ message: "Missing email or order_id" }, { status: 400 });
     }
-
-    const course = await Course.findOne({ razorpayOrderId: orderId });
+    
+    const course = await Course.findById(courseId);
     if (!course) {
       return NextResponse.json({ message: "Course not found for given order ID" }, { status: 404 });
     }
 
     const user = await User.findOne({ email });
     if (!user) {
+      console.log("User not found for email:", email);
       return NextResponse.json({ message: "User not found" }, { status: 404 });
     }
 
@@ -58,6 +60,8 @@ export async function POST(request: NextRequest) {
       (c: mongoose.Types.ObjectId) => c.toString() === course._id.toString()
     );
     if (alreadyPurchased) {
+      console.log("Course already purchased by user:", user.email);
+      
       return NextResponse.json({ message: "Course already purchased" }, { status: 200 });
     }
 
