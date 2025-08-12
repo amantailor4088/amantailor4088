@@ -1,8 +1,6 @@
-// context/AuthContext.tsx
 "use client";
 
 import { createContext, Dispatch, SetStateAction, useContext, useEffect, useState } from "react";
-
 
 interface UserType {
   id: string;
@@ -17,32 +15,39 @@ interface AuthContextProps {
   user: UserType | null;
   setUser: (user: UserType | null) => void;
   logout: () => void;
-  resetPassword: boolean,
-  setResetpassword: Dispatch<SetStateAction<boolean>>
+  resetPassword: boolean;
+  setResetpassword: Dispatch<SetStateAction<boolean>>;
 }
 
 const AuthContext = createContext<AuthContextProps | undefined>(undefined);
 
 export const AuthProvider = ({ children }: { children: React.ReactNode }) => {
   const [user, setUser] = useState<UserType | null>(null);
-  const [resetPassword, setResetpassword] = useState(false)
+  const [resetPassword, setResetpassword] = useState(false);
+
+  // Fetch latest user from DB
+  const fetchUserFromDB = async () => {
+    try {
+      const res = await fetch("/api/user/refreshUser",  { cache: "no-store" });
+      if (!res.ok) throw new Error("Not authenticated");
+      const data = await res.json();
+      setUser(data?.user);
+      localStorage.setItem("authUser", JSON.stringify(data?.user));
+    } catch (error) {
+      console.error("Failed to fetch user:", error);
+      setUser(null);
+      localStorage.removeItem("authUser");
+    }
+  };
 
   useEffect(() => {
-    const stored = localStorage.getItem("authUser");
-    if (stored) {
-      try {
-        setUser(JSON.parse(stored));
-      } catch {
-        setUser(null);
-      }
-    }
+    fetchUserFromDB();
   }, []);
-  
 
   const logout = async () => {
     localStorage.removeItem("authUser");
     setUser(null);
-    await fetch("/api/auth/logout")
+    await fetch("/api/auth/logout");
   };
 
   return (
