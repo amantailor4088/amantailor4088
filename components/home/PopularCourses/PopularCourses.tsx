@@ -66,6 +66,18 @@ const PopularCourses = () => {
                     </div>
                   )}
 
+                  {course.title.includes("Stitch Like a Pro – Learn Tailoring from Basic to Advance") && (
+                    <div className="w-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
+                      <Image
+                        src="/recomended.jpg"
+                        alt={course.title}
+                        className="w-full h-auto object-contain" 
+                        width={600}
+                        height={400}
+                      />
+                    </div>
+                  )}
+
                   {(course.title.includes("FARSI SALWAR")) && (
                     <div className="w-full overflow-hidden rounded-t-3xl bg-gray-100 dark:bg-neutral-800 flex items-center justify-center">
                       <Image
